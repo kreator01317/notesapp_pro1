@@ -7,7 +7,7 @@
 <title>NotesApp Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Firebase SDK (Compat) -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -18,371 +18,277 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   
   :root {
-    --bg: #fafbfc; --bg-elevated: #ffffff; --bg-sunken: #f3f4f6; --bg-hover: rgba(99, 102, 241, 0.06);
-    --bg-active: rgba(99, 102, 241, 0.12); --border: rgba(0, 0, 0, 0.06); --border-strong: rgba(0, 0, 0, 0.12);
-    --text: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8; --text-faint: #cbd5e1;
-    --primary: #6366f1; --primary-hover: #4f46e5; --primary-light: rgba(99, 102, 241, 0.1);
+    --bg: #f8fafc; 
+    --bg-elevated: #ffffff; 
+    --bg-sunken: #f1f5f9; 
+    --bg-hover: rgba(99, 102, 241, 0.05);
+    --bg-active: rgba(99, 102, 241, 0.1); 
+    --border: rgba(226, 232, 240, 0.8); 
+    --border-strong: rgba(203, 213, 225, 1);
+    --text: #0f172a; 
+    --text-secondary: #475569; 
+    --text-muted: #94a3b8; 
+    --text-faint: #cbd5e1;
+    --primary: #6366f1; 
+    --primary-hover: #4f46e5; 
+    --primary-light: rgba(99, 102, 241, 0.08);
     --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --accent-pink: #ec4899; --accent-amber: #f59e0b; --accent-emerald: #10b981; --accent-sky: #0ea5e9;
-    --danger: #ef4444; --danger-hover: #dc2626; --warning: #f59e0b; --success: #10b981;
-    --shadow-xs: 0 1px 2px rgba(0,0,0,0.04); --shadow-sm: 0 2px 4px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04); --shadow-lg: 0 12px 32px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
-    --shadow-xl: 0 24px 48px rgba(0,0,0,0.12); --radius-sm: 8px; --radius: 12px; --radius-lg: 16px; --radius-xl: 20px;
-    --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1); --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --accent-pink: #ec4899; 
+    --accent-amber: #f59e0b; 
+    --accent-emerald: #10b981; 
+    --accent-sky: #0ea5e9;
+    --danger: #ef4444; 
+    --danger-hover: #dc2626; 
+    --warning: #f59e0b; 
+    --success: #10b981;
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.03); 
+    --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 8px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -1px rgba(15, 23, 42, 0.03); 
+    --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+    --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.15); 
+    --radius-sm: 8px; 
+    --radius: 12px; 
+    --radius-lg: 16px; 
+    --radius-xl: 24px;
+    --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1); 
+    --transition-slow: 280ms cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   [data-theme="dark"] {
-    --bg: #0a0a0f; --bg-elevated: #14141c; --bg-sunken: #0f0f17; --bg-hover: rgba(139, 92, 246, 0.08);
-    --bg-active: rgba(139, 92, 246, 0.16); --border: rgba(255, 255, 255, 0.06); --border-strong: rgba(255, 255, 255, 0.12);
-    --text: #f1f5f9; --text-secondary: #cbd5e1; --text-muted: #64748b; --text-faint: #334155;
-    --primary: #8b5cf6; --primary-hover: #7c3aed; --primary-light: rgba(139, 92, 246, 0.15);
-    --shadow-xs: 0 1px 2px rgba(0,0,0,0.3); --shadow-sm: 0 2px 4px rgba(0,0,0,0.3); --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-    --shadow-lg: 0 12px 32px rgba(0,0,0,0.5); --shadow-xl: 0 24px 48px rgba(0,0,0,0.6);
+    --bg: #090d16; 
+    --bg-elevated: #111827; 
+    --bg-sunken: #0b1120; 
+    --bg-hover: rgba(139, 92, 246, 0.08);
+    --bg-active: rgba(139, 92, 246, 0.16); 
+    --border: rgba(255, 255, 255, 0.07); 
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #f8fafc; 
+    --text-secondary: #cbd5e1; 
+    --text-muted: #64748b; 
+    --text-faint: #334155;
+    --primary: #8b5cf6; 
+    --primary-hover: #7c3aed; 
+    --primary-light: rgba(139, 92, 246, 0.15);
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.4); 
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.4); 
+    --shadow-md: 0 6px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 16px 32px rgba(0,0,0,0.6); 
+    --shadow-xl: 0 24px 48px rgba(0,0,0,0.7);
   }
   
   html, body { height: 100%; overflow: hidden; }
-  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; transition: background var(--transition), color var(--transition); }
-  body::before { content: ''; position: fixed; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%); pointer-events: none; z-index: 0; opacity: 0.5; }
+  body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; transition: background var(--transition), color var(--transition); }
+  body::before { content: ''; position: fixed; top: -20%; right: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%); pointer-events: none; z-index: 0; opacity: 0.6; filter: blur(40px); }
   
   .app { display: flex; height: 100vh; position: relative; z-index: 1; }
-  ::-webkit-scrollbar { width: 6px; height: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; } ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  ::-webkit-scrollbar { width: 5px; height: 5px; } 
+  ::-webkit-scrollbar-track { background: transparent; } 
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; } 
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
   
-  .sidebar { width: 280px; background: var(--bg-elevated); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: transform var(--transition-slow), width var(--transition-slow); flex-shrink: 0; position: relative; z-index: 10; }
-  .sidebar-header { padding: 16px 16px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
-  .logo-icon { width: 36px; height: 36px; background: var(--primary-gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3); position: relative; overflow: hidden; }
-  .logo-icon::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent); }
-  .logo-icon svg { width: 20px; height: 20px; position: relative; z-index: 1; }
+  .sidebar { width: 270px; background: var(--bg-elevated); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: transform var(--transition-slow), width var(--transition-slow); flex-shrink: 0; position: relative; z-index: 10; }
+  .sidebar-header { padding: 16px 16px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.02em; }
+  .logo-icon { width: 32px; height: 32px; background: var(--primary-gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); position: relative; overflow: hidden; }
+  .logo-icon::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent); }
+  .logo-icon svg { width: 18px; height: 18px; position: relative; z-index: 1; }
   
   .icon-btn { width: 32px; height: 32px; border: none; background: transparent; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition); position: relative; }
-  .icon-btn:hover { background: var(--bg-hover); color: var(--primary); } .icon-btn:active { transform: scale(0.95); } .icon-btn svg { width: 18px; height: 18px; }
+  .icon-btn:hover { background: var(--bg-hover); color: var(--primary); transform: translateY(-1px); } 
+  .icon-btn:active { transform: scale(0.95); } 
+  .icon-btn svg { width: 16px; height: 16px; }
   
-  .search-box { padding: 0 16px 12px; }
-  .search-input { width: 100%; padding: 10px 12px 10px 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; transition: all var(--transition); font-family: inherit; }
-  .search-input:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 2px var(--primary-light); } .search-input::placeholder { color: var(--text-muted); }
+  .search-box { padding: 0 12px 10px; }
+  .search-input { width: 100%; padding: 8px 12px 8px 34px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 13px; outline: none; transition: all var(--transition); font-family: inherit; }
+  .search-input:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 3px var(--primary-light); } 
+  .search-input::placeholder { color: var(--text-muted); }
   .search-wrapper { position: relative; }
-  .search-wrapper svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+  .search-wrapper svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--text-muted); pointer-events: none; }
   
-  .action-buttons { padding: 0 16px 16px; display: flex; gap: 8px; }
-  .btn { flex: 1; padding: 10px 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all var(--transition); font-family: inherit; position: relative; overflow: hidden; }
-  .btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent); opacity: 0; transition: opacity var(--transition); }
-  .btn:hover::after { opacity: 1; } .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--primary-gradient); color: white; box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25); }
-  .btn-primary:hover { box-shadow: 0 3px 8px rgba(99, 102, 241, 0.35); }
-  .btn-secondary { background: var(--bg-sunken); color: var(--text); border: 1px solid var(--border); }
+  .action-buttons { padding: 0 12px 12px; display: flex; gap: 8px; }
+  .btn { flex: 1; padding: 9px 12px; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all var(--transition); font-family: inherit; position: relative; overflow: hidden; }
+  .btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); opacity: 0; transition: opacity var(--transition); }
+  .btn:hover::after { opacity: 1; } 
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); }
+  .btn-primary:hover { box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35); }
+  .btn-secondary { background: var(--bg-sunken); color: var(--text-secondary); border: 1px solid var(--border); }
   .btn-secondary:hover { background: var(--bg-hover); border-color: var(--primary); color: var(--primary); }
-  .btn svg { width: 16px; height: 16px; }
+  .btn svg { width: 15px; height: 15px; }
   
-  .section-label { padding: 8px 16px 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .tree-container { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 4px 0 8px; }
-  
-  /* FILE MANAGER STYLE TREE */
-  .tree-item { 
-    display: flex; 
-    align-items: center; 
-    padding: 8px 12px; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    user-select: none; 
-    transition: all var(--transition); 
-    gap: 8px; 
-    position: relative; 
-    font-size: 13px; 
-    font-weight: 500; 
-    color: var(--text-secondary); 
-    margin: 2px 8px;
-    border: 1px solid transparent;
-  }
-  .tree-item:hover { 
-    background: var(--bg-hover); 
-    color: var(--text);
-    border-color: var(--border);
-  }
-  .tree-item.active { 
-    background: var(--primary-light); 
-    color: var(--primary); 
-    font-weight: 600;
-    border-color: var(--primary);
-  }
-  .tree-item.active::before { 
-    content: ''; 
-    position: absolute; 
-    left: 0; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    width: 3px; 
-    height: 20px; 
-    background: var(--primary); 
-    border-radius: 0 3px 3px 0; 
-  }
-  .tree-item.drag-over { 
-    background: var(--primary-light); 
-    outline: 1px dashed var(--primary); 
-    outline-offset: -1px; 
-  }
+  .section-label { padding: 10px 16px 6px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .tree-container { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 4px 8px 8px; }
+  .tree-item { display: flex; align-items: center; padding: 9px 12px; border-radius: var(--radius-sm); cursor: pointer; user-select: none; transition: all var(--transition); gap: 8px; position: relative; font-size: 14px; font-weight: 500; color: var(--text-secondary); margin: 2px 0; }
+  .tree-item:hover { background: var(--bg-hover); color: var(--text); }
+  .tree-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+  .tree-item.active::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; background: var(--primary); border-radius: 0 4px 4px 0; }
+  .tree-item.drag-over { background: var(--primary-light); outline: 1px dashed var(--primary); outline-offset: -1px; }
   .tree-item.dragging { opacity: 0.4; }
   
-  /* Tree lines for hierarchy */
-  .tree-children { 
-    margin-left: 0; 
-    padding-left: 0; 
-    overflow: hidden; 
-    animation: expandIn 0.2s ease; 
-    position: relative;
-  }
-  .tree-children::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--border);
-  }
+  .toggle-btn { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: transform var(--transition); flex-shrink: 0; border-radius: 4px; }
+  .toggle-btn:hover { background: var(--bg-active); color: var(--primary); } 
+  .toggle-btn.expanded { transform: rotate(90deg); } 
+  .toggle-btn svg { width: 12px; height: 12px; }
+  .toggle-placeholder { width: 18px; flex-shrink: 0; }
+  .item-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .item-icon svg { width: 17px; height: 17px; } 
+  .item-icon.folder { color: var(--accent-amber); } 
+  .item-icon.note { color: var(--primary); }
+  .item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-count { font-size: 11px; color: var(--text-muted); background: var(--bg-sunken); padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+  .item-pin { color: var(--accent-amber); font-size: 12px; }
+  .tree-children { margin-left: 14px; padding-left: 10px; border-left: 1.5px solid var(--border); overflow: hidden; animation: expandIn 0.2s ease; }
+  @keyframes expandIn { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 1000px; } }
   
-  @keyframes expandIn { 
-    from { opacity: 0; max-height: 0; } 
-    to { opacity: 1; max-height: 1000px; } 
-  }
+  .sidebar-footer { padding: 12px 12px; border-top: 1px solid var(--border); display: flex; gap: 6px; background: var(--bg-elevated); }
   
-  .toggle-btn { 
-    width: 20px; 
-    height: 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--text-muted); 
-    transition: transform var(--transition); 
-    flex-shrink: 0; 
-    border-radius: 4px; 
-    z-index: 1;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  .toggle-btn:hover { 
-    background: var(--bg-active); 
-    color: var(--primary); 
-  } 
-  .toggle-btn.expanded { 
-    transform: rotate(90deg); 
-  } 
-  .toggle-btn svg { 
-    width: 14px; 
-    height: 14px; 
-  }
-  .toggle-placeholder { 
-    width: 20px; 
-    flex-shrink: 0; 
-  }
+  .notes-list { width: 310px; background: var(--bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; transition: transform var(--transition-slow); }
+  .notes-header { padding: 16px 18px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); }
+  .notes-title { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+  .notes-subtitle { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .notes-filter { padding: 8px 12px; display: flex; gap: 4px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); }
+  .filter-btn { flex: 1; padding: 6px 10px; border: none; background: transparent; color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); transition: all var(--transition); font-family: inherit; }
+  .filter-btn:hover { color: var(--text); background: var(--bg-hover); } 
+  .filter-btn.active { background: var(--primary-light); color: var(--primary); font-weight: 700; }
   
-  .item-icon { 
-    width: 20px; 
-    height: 20px; 
-    flex-shrink: 0; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 1;
-  }
-  .item-icon svg { 
-    width: 18px; 
-    height: 18px; 
-  }
-  .item-icon.folder { 
-    color: var(--accent-amber); 
-  }
-  .item-icon.folder-open {
-    color: var(--accent-amber);
-  }
-  .item-icon.note { 
-    color: var(--primary); 
-  }
-  .item-icon.virtual {
-    color: var(--text-muted);
-  }
-  
-  .item-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-  }
-  
-  .item-name { 
-    flex: 1; 
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-  }
-  
-  .item-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-  
-  .item-count { 
-    font-size: 11px; 
-    color: var(--text-muted); 
-    background: var(--bg-sunken); 
-    padding: 2px 6px; 
-    border-radius: 4px; 
-    font-weight: 600; 
-    min-width: 20px;
-    text-align: center;
-  }
-  
-  .item-pin { 
-    color: var(--accent-amber); 
-    font-size: 12px; 
-  }
-  
-  .item-star {
-    color: var(--accent-amber);
-    font-size: 12px;
-  }
-  
-  /* Indentation levels */
-  .tree-level-0 { padding-left: 12px; }
-  .tree-level-1 { padding-left: 32px; }
-  .tree-level-2 { padding-left: 52px; }
-  .tree-level-3 { padding-left: 72px; }
-  .tree-level-4 { padding-left: 92px; }
-  
-  /* File type indicators */
-  .file-type {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-  }
-  
-  .sidebar-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 6px; background: var(--bg-elevated); }
-  .sidebar-footer .icon-btn { flex: 1; }
-  
-  .notes-list { width: 320px; background: var(--bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; transition: transform var(--transition-slow); }
-  .notes-header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); }
-  .notes-title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-  .notes-subtitle { font-size: 12px; color: var(--text-muted); }
-  .notes-filter { padding: 8px 16px; display: flex; gap: 6px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); }
-  .filter-btn { flex: 1; padding: 6px 10px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: all var(--transition); font-family: inherit; }
-  .filter-btn:hover { color: var(--text); background: var(--bg-hover); } .filter-btn.active { background: var(--primary-light); color: var(--primary); }
-  
-  .notes-scroll { flex: 1; overflow-y: auto; padding: 8px; }
-  .note-card { padding: 12px 14px; border-radius: 10px; cursor: pointer; transition: all var(--transition); margin-bottom: 4px; border: 1px solid transparent; position: relative; background: var(--bg-elevated); }
-  .note-card:hover { border-color: var(--border-strong); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-  .note-card.active { background: var(--primary-light); border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1); }
-  .note-card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; line-height: 1.3; }
+  .notes-scroll { flex: 1; overflow-y: auto; padding: 10px; }
+  .note-card { padding: 14px 14px; border-radius: var(--radius); cursor: pointer; transition: all var(--transition); margin-bottom: 8px; border: 1px solid var(--border); position: relative; background: var(--bg-elevated); box-shadow: var(--shadow-xs); }
+  .note-card:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .note-card.active { background: var(--bg-elevated); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary), var(--shadow-md); }
+  .note-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; line-height: 1.3; letter-spacing: -0.01em; }
   .note-card-pin { color: var(--accent-amber); font-size: 11px; }
-  .note-card-preview { font-size: 12px; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; }
-  .note-card-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); }
-  .note-card-tag { padding: 2px 6px; background: var(--bg-sunken); border-radius: 6px; font-size: 10px; font-weight: 600; color: var(--text-secondary); }
+  .note-card-preview { font-size: 12px; color: var(--text-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; opacity: 0.85; }
+  .note-card-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .note-card-tag { padding: 2px 7px; background: var(--bg-sunken); border-radius: 6px; font-size: 10px; font-weight: 600; color: var(--text-secondary); border: 1px solid var(--border); }
   
   .empty-list { padding: 40px 20px; text-align: center; color: var(--text-muted); }
-  .empty-list-icon { width: 56px; height: 56px; margin: 0 auto 16px; background: var(--bg-sunken); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-faint); }
-  .empty-list-icon svg { width: 26px; height: 26px; }
-  .empty-list h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; } .empty-list p { font-size: 12px; }
+  .empty-list-icon { width: 52px; height: 52px; margin: 0 auto 14px; background: var(--bg-sunken); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-faint); border: 1px solid var(--border); }
+  .empty-list-icon svg { width: 24px; height: 24px; }
+  .empty-list h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; } 
+  .empty-list p { font-size: 12px; }
   
   .editor { flex: 1; display: flex; flex-direction: column; background: var(--bg-elevated); min-width: 0; position: relative; }
-  .editor-header { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--bg-elevated); min-height: 56px; }
-  .breadcrumb { flex: 1; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; overflow: hidden; white-space: nowrap; }
-  .breadcrumb-item { cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all var(--transition); }
-  .breadcrumb-item:hover { background: var(--bg-hover); color: var(--primary); } .breadcrumb-item.current { color: var(--text); font-weight: 600; }
+  .editor-header { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--bg-elevated); min-height: 54px; }
+  .breadcrumb { flex: 1; font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 6px; overflow: hidden; white-space: nowrap; }
+  .breadcrumb-item { cursor: pointer; padding: 4px 8px; border-radius: var(--radius-sm); transition: all var(--transition); }
+  .breadcrumb-item:hover { background: var(--bg-hover); color: var(--primary); } 
+  .breadcrumb-item.current { color: var(--text); font-weight: 700; }
   .breadcrumb-sep { color: var(--text-faint); font-size: 11px; }
   
   .editor-toolbar { padding: 8px 24px; border-bottom: 1px solid var(--border); display: flex; gap: 4px; flex-wrap: wrap; background: var(--bg-elevated); align-items: center; transition: all var(--transition); }
   .editor-toolbar.hidden { display: none; }
-  .tool-btn { padding: 6px 10px; border: none; background: transparent; color: var(--text-secondary); border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 5px; transition: all var(--transition); font-family: inherit; }
-  .tool-btn:hover { background: var(--bg-hover); color: var(--primary); } .tool-btn:active { transform: scale(0.95); } .tool-btn.active { background: var(--primary-light); color: var(--primary); } .tool-btn svg { width: 14px; height: 14px; }
+  .tool-btn { padding: 6px 10px; border: none; background: transparent; color: var(--text-secondary); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; transition: all var(--transition); font-family: inherit; }
+  .tool-btn:hover { background: var(--bg-hover); color: var(--primary); } 
+  .tool-btn:active { transform: scale(0.95); } 
+  .tool-btn.active { background: var(--primary-light); color: var(--primary); } 
+  .tool-btn svg { width: 14px; height: 14px; }
   .tool-divider { width: 1px; height: 18px; background: var(--border); margin: 0 4px; }
   
   .editor-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
-  .title-input { width: 100%; padding: 24px 48px 8px; border: none; background: transparent; font-size: 32px; font-weight: 800; color: var(--text); outline: none; letter-spacing: -0.02em; line-height: 1.2; font-family: inherit; }
-  .title-input::placeholder { color: var(--text-faint); }
-  .meta-row { padding: 0 48px 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--text-muted); }
-  .meta-item { display: flex; align-items: center; gap: 6px; } .meta-item svg { width: 14px; height: 14px; }
-  .tags-input { width: 100%; padding: 0 48px 16px; border: none; background: transparent; color: var(--text-secondary); font-size: 13px; outline: none; font-family: inherit; }
-  .tags-input::placeholder { color: var(--text-faint); }
-  .content-area { flex: 1; padding: 0 48px 80px; overflow-y: auto; }
-  .editor-textarea { width: 100%; min-height: 100%; border: none; background: transparent; color: var(--text); font-size: 16px; line-height: 1.7; outline: none; resize: none; font-family: 'Inter', sans-serif; font-weight: 400; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
-  .editor-textarea::placeholder { color: var(--text-faint); } .editor-textarea:focus { outline: none; box-shadow: none; }
+  .title-input { width: 100%; padding: 28px 48px 10px; border: none; background: transparent; font-size: 32px; font-weight: 800; color: var(--text); outline: none; letter-spacing: -0.03em; line-height: 1.25; font-family: inherit; }
+  .title-input::placeholder { color: var(--text-faint); font-weight: 700; }
+  .meta-row { padding: 0 48px 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .meta-item { display: flex; align-items: center; gap: 6px; } 
+  .meta-item svg { width: 14px; height: 14px; }
+  .tags-input { width: 100%; padding: 0 48px 16px; border: none; background: transparent; color: var(--primary); font-size: 13px; font-weight: 600; outline: none; font-family: inherit; }
+  .tags-input::placeholder { color: var(--text-faint); font-weight: 400; }
+  .content-area { flex: 1; padding: 0 48px 60px; overflow-y: auto; }
+  .editor-textarea { width: 100%; min-height: 100%; border: none; background: transparent; color: var(--text); font-size: 16px; line-height: 1.75; outline: none; resize: none; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+  .editor-textarea::placeholder { color: var(--text-faint); } 
+  .editor-textarea:focus { outline: none; box-shadow: none; }
   
-  .preview { font-size: 16px; line-height: 1.7; color: var(--text); }
-  .preview h1 { font-size: 2em; font-weight: 800; margin: 0.8em 0 0.4em; letter-spacing: -0.02em; }
-  .preview h2 { font-size: 1.5em; font-weight: 700; margin: 0.8em 0 0.4em; letter-spacing: -0.01em; }
-  .preview h3 { font-size: 1.2em; font-weight: 600; margin: 0.8em 0 0.4em; }
-  .preview p { margin: 0.6em 0; } .preview ul, .preview ol { margin: 0.6em 0; padding-left: 20px; } .preview li { margin: 0.2em 0; }
-  .preview code { background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--primary); }
-  .preview pre { background: var(--bg-sunken); padding: 12px; border-radius: 8px; overflow-x: auto; margin: 0.8em 0; border: 1px solid var(--border); }
-  .preview pre code { background: transparent; padding: 0; color: var(--text); }
-  .preview blockquote { border-left: 2px solid var(--primary); padding: 6px 12px; color: var(--text-secondary); margin: 0.8em 0; background: var(--primary-light); border-radius: 0 4px 4px 0; }
-  .preview a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
-  .preview strong { font-weight: 700; } .preview em { font-style: italic; } .preview hr { border: none; border-top: 1px solid var(--border); margin: 1.5em 0; }
+  .preview { font-size: 16px; line-height: 1.75; color: var(--text); }
+  .preview h1 { font-size: 2.2em; font-weight: 800; margin: 1em 0 0.5em; letter-spacing: -0.03em; line-height: 1.2; }
+  .preview h2 { font-size: 1.6em; font-weight: 700; margin: 1em 0 0.5em; letter-spacing: -0.02em; line-height: 1.3; }
+  .preview h3 { font-size: 1.25em; font-weight: 600; margin: 1em 0 0.5em; }
+  .preview p { margin: 0.8em 0; } 
+  .preview ul, .preview ol { margin: 0.8em 0; padding-left: 24px; } 
+  .preview li { margin: 0.3em 0; }
+  .preview code { background: var(--bg-sunken); padding: 3px 6px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--primary); border: 1px solid var(--border); }
+  .preview pre { background: var(--bg-sunken); padding: 16px; border-radius: var(--radius); overflow-x: auto; margin: 1em 0; border: 1px solid var(--border); }
+  .preview pre code { background: transparent; padding: 0; color: var(--text); border: none; }
+  .preview blockquote { border-left: 3px solid var(--primary); padding: 8px 16px; color: var(--text-secondary); margin: 1em 0; background: var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-style: italic; }
+  .preview a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+  .preview strong { font-weight: 700; } 
+  .preview em { font-style: italic; } 
+  .preview hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
   
   .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); padding: 40px; text-align: center; }
-  .empty-illustration { width: 140px; height: 140px; margin-bottom: 24px; position: relative; }
-  .empty-illustration::before { content: ''; position: absolute; inset: 0; background: var(--primary-gradient); border-radius: 50%; opacity: 0.1; animation: pulse 3s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(1.1); opacity: 0.15; } }
-  .empty-illustration svg { position: relative; width: 100%; height: 100%; color: var(--primary); padding: 30px; }
-  .empty-state h2 { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em; }
-  .empty-state p { margin-bottom: 24px; max-width: 320px; color: var(--text-secondary); font-size: 14px; }
+  .empty-illustration { width: 130px; height: 130px; margin-bottom: 20px; position: relative; }
+  .empty-illustration::before { content: ''; position: absolute; inset: 0; background: var(--primary-gradient); border-radius: 50%; opacity: 0.12; animation: pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.12; } 50% { transform: scale(1.12); opacity: 0.18; } }
+  .empty-illustration svg { position: relative; width: 100%; height: 100%; color: var(--primary); padding: 32px; }
+  .empty-state h2 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -0.02em; }
+  .empty-state p { margin-bottom: 24px; max-width: 300px; color: var(--text-secondary); font-size: 14px; line-height: 1.5; }
   
-  .status-bar { padding: 8px 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; background: var(--bg-elevated); font-weight: 500; }
+  .status-bar { padding: 8px 24px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; background: var(--bg-elevated); font-weight: 600; }
   .status-dot { display: inline-block; width: 6px; height: 6px; background: var(--success); border-radius: 50%; margin-right: 6px; animation: blink 2s ease-in-out infinite; }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.2s ease; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.2s ease; }
   .modal-overlay.active { display: flex; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .modal { background: var(--bg-elevated); border-radius: 14px; padding: 24px; width: 90%; max-width: 400px; box-shadow: var(--shadow-xl); animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid var(--border); }
-  @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-  .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
-  .modal-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-  .modal input, .modal textarea, .modal select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; margin-bottom: 16px; font-family: inherit; transition: all var(--transition); }
-  .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 2px var(--primary-light); }
+  .modal { background: var(--bg-elevated); border-radius: var(--radius-xl); padding: 24px; width: 90%; max-width: 400px; box-shadow: var(--shadow-xl); animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid var(--border); }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.92) translateY(16px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.02em; }
+  .modal-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; font-weight: 500; }
+  .modal input, .modal textarea, .modal select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; margin-bottom: 18px; font-family: inherit; transition: all var(--transition); }
+  .modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 3px var(--primary-light); }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
   
-  .context-menu { position: fixed; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-lg); padding: 6px; min-width: 200px; z-index: 999; display: none; animation: menuIn 0.15s ease; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .context-menu { position: fixed; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 6px; min-width: 190px; z-index: 999; display: none; animation: menuIn 0.15s ease; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
   .context-menu.active { display: block; }
   @keyframes menuIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-  .context-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: background var(--transition); color: var(--text); font-weight: 500; }
+  .context-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: background var(--transition); color: var(--text); font-weight: 600; }
   .context-item:hover { background: var(--bg-hover); color: var(--primary); }
-  .context-item.danger { color: var(--danger); } .context-item.danger:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-  .context-item svg { width: 16px; height: 16px; } .context-sep { height: 1px; background: var(--border); margin: 4px 0; }
+  .context-item.danger { color: var(--danger); } 
+  .context-item.danger:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+  .context-item svg { width: 15px; height: 15px; } 
+  .context-sep { height: 1px; background: var(--border); margin: 4px 0; }
   
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 10px; box-shadow: var(--shadow-lg); z-index: 2000; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px; max-width: 90%; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 30px; box-shadow: var(--shadow-xl); z-index: 2000; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; max-width: 90%; }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .toast.success .toast-icon { background: var(--success); color: white; } .toast.error .toast-icon { background: var(--danger); color: white; }
+  .toast.success .toast-icon { background: var(--success); color: white; } 
+  .toast.error .toast-icon { background: var(--danger); color: white; }
   
-  .menu-toggle { display: none; } .back-toggle { display: none; }
-  .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 9; }
+  .menu-toggle { display: none; } 
+  .back-toggle { display: none; }
+  .backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 9; }
   .backdrop.active { display: block; }
-  .drag-ghost { position: fixed; pointer-events: none; background: var(--primary-gradient); color: white; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; box-shadow: var(--shadow-lg); z-index: 9999; display: none; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .drag-ghost { position: fixed; pointer-events: none; background: var(--primary-gradient); color: white; padding: 8px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; box-shadow: var(--shadow-lg); z-index: 9999; display: none; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   
-  .fab { display: none; position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: var(--primary-gradient); color: white; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); z-index: 50; align-items: center; justify-content: center; transition: all var(--transition); }
-  .fab:hover { transform: scale(1.05); box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5); } .fab:active { transform: scale(0.95); } .fab svg { width: 24px; height: 24px; }
+  .fab { display: none; position: fixed; bottom: 20px; right: 20px; width: 52px; height: 52px; border-radius: 50%; background: var(--primary-gradient); color: white; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45); z-index: 50; align-items: center; justify-content: center; transition: all var(--transition); }
+  .fab:hover { transform: scale(1.06); box-shadow: 0 10px 28px rgba(99, 102, 241, 0.55); } 
+  .fab:active { transform: scale(0.94); } 
+  .fab svg { width: 22px; height: 22px; }
   
-  @media (max-width: 1024px) { .notes-list { width: 280px; } }
+  @media (max-width: 1024px) { .notes-list { width: 270px; } }
   @media (max-width: 768px) {
-    .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); width: 85%; max-width: 300px; box-shadow: var(--shadow-xl); z-index: 100; }
-    .sidebar.open { transform: translateX(0); } .menu-toggle { display: flex; }
+    .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); width: 85%; max-width: 290px; box-shadow: var(--shadow-xl); z-index: 100; }
+    .sidebar.open { transform: translateX(0); } 
+    .menu-toggle { display: flex; }
     .notes-list { position: absolute; inset: 0; width: 100%; transform: translateX(0); z-index: 5; }
-    .notes-list.hidden-mobile { transform: translateX(-100%); } .back-toggle { display: flex; }
+    .notes-list.hidden-mobile { transform: translateX(-100%); } 
+    .back-toggle { display: flex; }
     .editor { position: absolute; inset: 0; transform: translateX(100%); transition: transform var(--transition-slow); z-index: 6; }
     .editor.active-mobile { transform: translateX(0); }
-    .title-input { font-size: 24px; padding: 20px 20px 8px; } .meta-row, .tags-input { padding: 0 20px 12px; } .content-area { padding: 0 20px 60px; }
-    .editor-header, .editor-toolbar, .status-bar { padding: 12px 16px; } .fab { display: flex; } .app { position: relative; overflow: hidden; }
+    .title-input { font-size: 24px; padding: 20px 20px 8px; } 
+    .meta-row, .tags-input { padding: 0 20px 12px; } 
+    .content-area { padding: 0 20px 50px; }
+    .editor-header, .editor-toolbar, .status-bar { padding: 12px 16px; } 
+    .fab { display: flex; } 
+    .app { position: relative; overflow: hidden; }
   }
   @media (max-width: 480px) { .title-input { font-size: 22px; } .editor-textarea, .preview { font-size: 15px; } }
   
-  @keyframes slideIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
-  .note-card { animation: slideIn 0.2s ease backwards; }
-  .note-card:nth-child(1) { animation-delay: 0s; } .note-card:nth-child(2) { animation-delay: 0.02s; } .note-card:nth-child(3) { animation-delay: 0.04s; } .note-card:nth-child(4) { animation-delay: 0.06s; } .note-card:nth-child(5) { animation-delay: 0.08s; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .note-card { animation: slideIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) backwards; }
+  .note-card:nth-child(1) { animation-delay: 0s; } 
+  .note-card:nth-child(2) { animation-delay: 0.03s; } 
+  .note-card:nth-child(3) { animation-delay: 0.06s; } 
+  .note-card:nth-child(4) { animation-delay: 0.09s; } 
+  .note-card:nth-child(5) { animation-delay: 0.12s; }
   ::selection { background: var(--primary-light); color: var(--primary); }
   button:focus-visible, input:focus-visible, textarea:focus-visible { outline: none; box-shadow: none; }
 
@@ -390,34 +296,37 @@
     .sidebar, .notes-list, .editor-header, .editor-toolbar, .status-bar, .fab, .modal-overlay, .context-menu, .toast, .backdrop, .auth-overlay, .loading-overlay { display: none !important; }
     .app { display: block; height: auto; overflow: visible; }
     .editor { position: static !important; transform: none !important; width: 100% !important; height: auto !important; overflow: visible !important; box-shadow: none !important; }
-    .editor-content { overflow: visible !important; } .content-area { overflow: visible !important; padding: 0 !important; }
-    .title-input { font-size: 20pt !important; border: none !important; padding: 0 !important; margin-bottom: 6px !important; }
-    .meta-row, .tags-input { display: none !important; } .editor-textarea { display: none !important; }
-    .preview { display: block !important; font-size: 11pt !important; line-height: 1.5 !important; color: #000 !important; }
-    body { background: white !important; color: black !important; } body::before { display: none; }
+    .editor-content { overflow: visible !important; } 
+    .content-area { overflow: visible !important; padding: 0 !important; }
+    .title-input { font-size: 22pt !important; border: none !important; padding: 0 !important; margin-bottom: 8px !important; }
+    .meta-row, .tags-input { display: none !important; } 
+    .editor-textarea { display: none !important; }
+    .preview { display: block !important; font-size: 11pt !important; line-height: 1.6 !important; color: #000 !important; }
+    body { background: white !important; color: black !important; } 
+    body::before { display: none; }
   }
 
   /* Auth & Loading Overlay Styles */
-  .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+  .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
   .loading-overlay.active { display: flex; }
-  .spinner { width: 48px; height: 48px; border: 4px solid var(--bg-sunken); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+  .spinner { width: 44px; height: 44px; border: 4px solid var(--bg-sunken); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   
-  .auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; }
-  .auth-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; width: 100%; max-width: 420px; box-shadow: var(--shadow-xl); text-align: center; }
-  .auth-logo { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 28px; }
-  .auth-logo h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
-  .auth-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
-  .auth-error { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 20px; display: none; font-weight: 500; line-height: 1.4; text-align: left; }
+  .auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .auth-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 36px; width: 100%; max-width: 420px; box-shadow: var(--shadow-xl); text-align: center; }
+  .auth-logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; }
+  .auth-logo h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .auth-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; font-weight: 500; }
+  .auth-error { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 18px; display: none; font-weight: 500; line-height: 1.4; text-align: left; }
   .auth-error:not(:empty) { display: block; }
   .auth-form { text-align: left; }
-  .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
-  .form-group input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 15px; outline: none; transition: all var(--transition); font-family: inherit; }
-  .form-group input:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 2px var(--primary-light); }
-  .auth-btn { width: 100%; padding: 14px; font-size: 15px; margin-top: 8px; }
-  .auth-footer { margin-top: 24px; font-size: 14px; color: var(--text-muted); }
-  .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; transition: all var(--transition); font-family: inherit; }
+  .form-group input:focus { border-color: var(--primary); background: var(--bg-elevated); box-shadow: 0 0 0 3px var(--primary-light); }
+  .auth-btn { width: 100%; padding: 12px; font-size: 14px; margin-top: 8px; border-radius: var(--radius-sm); }
+  .auth-footer { margin-top: 24px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .auth-footer a { color: var(--primary); font-weight: 700; text-decoration: none; }
   .auth-footer a:hover { text-decoration: underline; }
 </style>
 </head>
@@ -426,7 +335,7 @@
 <!-- Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
-  <div style="font-size: 15px; font-weight: 600; color: var(--text-secondary);">Memuat catatan dari cloud...</div>
+  <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">Memuat catatan dari cloud...</div>
 </div>
 
 <!-- Auth Overlay -->
@@ -494,18 +403,18 @@
       </button>
     </div>
 
-    <div class="section-label"><span>File Manager</span></div>
+    <div class="section-label"><span>Folder</span></div>
     <div class="tree-container" id="treeContainer"></div>
 
-    <div class="sidebar-footer" style="flex-direction: column; gap: 10px; padding: 16px;">
-      <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px;">
-        <div style="width: 36px; height: 36px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">👤</div>
+    <div class="sidebar-footer" style="flex-direction: column; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 2px 4px;">
+        <div style="width: 32px; height: 32px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">👤</div>
         <div style="flex: 1; overflow: hidden;">
-          <div style="font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userEmailDisplay">user@email.com</div>
-          <div style="font-size: 11px; color: var(--text-muted);">Akun Aktif (Cloud Sync)</div>
+          <div style="font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userEmailDisplay">user@email.com</div>
+          <div style="font-size: 10px; color: var(--text-muted); font-weight: 500;">Cloud Sync Aktif</div>
         </div>
       </div>
-      <div style="display: flex; gap: 6px; width: 100%;">
+      <div style="display: flex; gap: 4px; width: 100%;">
         <button class="icon-btn" onclick="showTrash()" title="Sampah" style="flex:1;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         </button>
@@ -602,7 +511,7 @@
             <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span id="metaStats">0 kata • 0 karakter</span></div>
             <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="metaRead">~1 min read</span></div>
           </div>
-          <input type="text" class="tags-input" id="tagsInput" placeholder="️ Tags (pisahkan dengan koma)..." oninput="updateNote()">
+          <input type="text" class="tags-input" id="tagsInput" placeholder="🏷️ Tags (pisahkan dengan koma)..." oninput="updateNote()">
           <div class="content-area">
             <textarea class="editor-textarea" id="contentInput" placeholder="Mulai menulis... (mendukung Markdown)" oninput="updateNote()"></textarea>
             <div class="preview" id="previewContent" style="display:none;"></div>
@@ -627,7 +536,7 @@
   <div class="modal" id="modal"></div>
 </div>
 <div class="toast" id="toast">
-  <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 7 15"/></svg></div>
+  <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 7 15"/></svg></div>
   <span id="toastMsg">Berhasil</span>
 </div>
 <div class="drag-ghost" id="dragGhost"></div>
@@ -737,7 +646,7 @@ function loadFromFirestore(uid) {
     if (doc.exists) {
       const data = doc.data();
       state = { ...state, ...data };
-      applyTheme();
+      applyTheme(); 
     } else {
       const wf = { id: uid(), type: 'folder', parentId: null, name: '📚 Panduan', createdAt: Date.now(), updatedAt: Date.now() };
       const wn = { id: uid(), type: 'note', parentId: wf.id, name: 'Selamat Datang di NotesApp Pro 🎉', content: `# Selamat Datang! 👋\n\nAplikasi catatan modern dengan desain premium.\n\n## ✨ Fitur Utama\n- ☁️ **Cloud Sync**: Catatan Anda otomatis tersimpan dan muncul di semua perangkat.\n- 📁 **Folder & Subfolder** tanpa batas\n- 🔄 **Drag & Drop** untuk memindahkan\n- 🌙 **Dark Mode**\n\n## 📝 Markdown Support\n- **Bold** dengan \`**text**\`\n- *Italic* dengan \`*text*\`\n- \`inline code\` dengan backtick\n\n> Tips: Coba buka aplikasi ini di browser lain dan login dengan akun yang sama!`, tags: ['welcome'], pinned: true, createdAt: Date.now(), updatedAt: Date.now() };
@@ -782,11 +691,11 @@ function showExportModal() {
   modal.innerHTML = `
     <h3>Ekspor Data</h3>
     <p class="modal-subtitle">Pilih format file yang diinginkan</p>
-    <button class="btn btn-secondary" style="width:100%; margin-bottom:6px; justify-content:flex-start;" onclick="exportAsJSON()">📄 JSON (Backup Lengkap)</button>
-    <button class="btn btn-secondary" style="width:100%; margin-bottom:6px; justify-content:flex-start;" onclick="exportAsTXT()"> TXT (Semua Catatan)</button>
-    <button class="btn btn-secondary" style="width:100%; margin-bottom:6px; justify-content:flex-start;" onclick="exportAsCSV()">📊 CSV (Data Tabel)</button>
-    <button class="btn btn-secondary" style="width:100%; justify-content:flex-start;" onclick="exportAsPDF()">️ PDF (Print)</button>
-    <div class="modal-actions" style="margin-top: 12px;"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`;
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsJSON()">📄 JSON (Backup Lengkap)</button>
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsTXT()">📝 TXT (Semua Catatan)</button>
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsCSV()">📊 CSV (Data Tabel)</button>
+    <button class="btn btn-secondary" style="width:100%; justify-content:flex-start;" onclick="exportAsPDF()">🖨️ PDF (Print)</button>
+    <div class="modal-actions" style="margin-top: 16px;"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`;
   document.getElementById('modalOverlay').classList.add('active');
 }
 function exportAsJSON() { downloadFile(JSON.stringify(state, null, 2), `notesapp-backup-${getDateStr()}.json`, 'application/json'); closeModal(); showToast('Berhasil diekspor ke JSON'); }
@@ -795,7 +704,7 @@ function exportAsTXT() {
   const buildTxt = (node, depth) => {
     const indent = "  ".repeat(depth);
     if (node.type === 'folder') {
-      txt += `${indent} ${node.name}\n`;
+      txt += `${indent}📁 ${node.name}\n`;
       state.nodes.filter(n => !n.trashed && n.parentId === node.id).forEach(child => buildTxt(child, depth + 1));
     } else {
       txt += `${indent}📝 ${node.name}\n${indent}   Tags: ${(node.tags || []).join(', ') || 'Tidak ada'}\n${indent}   ${"-".repeat(40)}\n${indent}   ${node.content || '(Kosong)'}\n${indent}   ${"-".repeat(40)}\n\n`;
@@ -810,7 +719,7 @@ function exportFolder(folderId) {
   const collectNotes = (parentId, depth) => {
     state.nodes.filter(n => !n.trashed && n.parentId === parentId).forEach(child => {
       if (child.type === 'folder') { txt += "  ".repeat(depth) + `📁 ${child.name}\n`; collectNotes(child.id, depth + 1); }
-      else { txt += "  ".repeat(depth) + ` ${child.name}\n${"  ".repeat(depth)}   Tags: ${(child.tags || []).join(', ') || 'Tidak ada'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n${"  ".repeat(depth)}   ${child.content || '(Kosong)'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n\n`; }
+      else { txt += "  ".repeat(depth) + `📝 ${child.name}\n${"  ".repeat(depth)}   Tags: ${(child.tags || []).join(', ') || 'Tidak ada'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n${"  ".repeat(depth)}   ${child.content || '(Kosong)'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n\n`; }
     });
   };
   collectNotes(folderId, 0);
@@ -853,114 +762,51 @@ function renderTree() {
   if (query) nodes = nodes.filter(n => n.name.toLowerCase().includes(query) || (n.content && n.content.toLowerCase().includes(query)));
   const roots = nodes.filter(n => n.parentId === null);
   
-  if (query) { 
-    container.innerHTML = nodes.map(n => renderTreeItem(n, 0, true)).join(''); 
-  } else {
+  if (query) { container.innerHTML = nodes.map(n => renderTreeItem(n, 0, true)).join(''); }
+  else {
     const allCount = state.nodes.filter(n => !n.trashed && n.type === 'note').length;
-    let html = `<div class="tree-item tree-level-0 ${state.currentFolderId === null ? 'active' : ''}" data-id="__all__" data-type="virtual">
-      <div class="toggle-placeholder"></div>
-      <div class="item-icon virtual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-      <div class="item-content">
-        <div class="item-name">Semua Catatan</div>
-        <div class="item-meta"><div class="item-count">${allCount}</div></div>
-      </div>
-    </div>`;
-    
+    let html = `<div class="tree-item ${state.currentFolderId === null ? 'active' : ''}" data-id="__all__" data-type="virtual">
+      <div class="toggle-placeholder"></div><div class="item-icon note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="item-name">Semua Catatan</div><div class="item-count">${allCount}</div></div>`;
     const pinnedCount = state.nodes.filter(n => !n.trashed && n.type === 'note' && n.pinned).length;
-    if (pinnedCount > 0) {
-      html += `<div class="tree-item tree-level-0 ${state.currentFolderId === '__pinned__' ? 'active' : ''}" data-id="__pinned__" data-type="virtual">
-        <div class="toggle-placeholder"></div>
-        <div class="item-icon virtual" style="color: var(--accent-amber);"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 7h3l-5 7-5-7h3z"/></svg></div>
-        <div class="item-content">
-          <div class="item-name">Dipin</div>
-          <div class="item-meta"><div class="item-count">${pinnedCount}</div></div>
-        </div>
-      </div>`;
-    }
-    
+    if (pinnedCount > 0) html += `<div class="tree-item ${state.currentFolderId === '__pinned__' ? 'active' : ''}" data-id="__pinned__" data-type="virtual">
+      <div class="toggle-placeholder"></div><div class="item-icon" style="color: var(--accent-amber);"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 7h3l-5 7-5-7h3z"/></svg></div>
+      <div class="item-name">Dipin</div><div class="item-count">${pinnedCount}</div></div>`;
     html += roots.map(n => renderTreeItem(n, 0)).join('');
     container.innerHTML = html;
   }
-  
-  if (container.innerHTML === '') {
-    container.innerHTML = '<div style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 13px;">Belum ada folder</div>';
-  }
-  
+  if (container.innerHTML === '') container.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 12px;">Belum ada folder</div>';
   attachTreeEvents();
 }
-
 function renderTreeItem(node, depth, flat = false) {
   const isFolder = node.type === 'folder';
   const isExpanded = state.expanded[node.id];
   const isActive = state.currentFolderId === node.id;
   const children = flat ? [] : state.nodes.filter(n => n.parentId === node.id && !n.trashed);
   const count = isFolder ? state.nodes.filter(n => n.parentId === node.id && !n.trashed && n.type === 'note').length : 0;
+  const icon = isFolder ? `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
   
-  // Icons
-  const folderIcon = isExpanded 
-    ? '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><path d="M2 10h20"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
-  
-  const noteIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
-  
-  const levelClass = `tree-level-${Math.min(depth, 4)}`;
-  
-  let html = `<div class="tree-item ${levelClass} ${isActive ? 'active' : ''}" data-id="${node.id}" data-type="${node.type}" draggable="${isFolder}">`;
-  
-  if (isFolder && !flat) {
-    html += `<button class="toggle-btn ${isExpanded ? 'expanded' : ''}" data-toggle="${node.id}">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-    </button>`;
-  } else {
-    html += '<div class="toggle-placeholder"></div>';
-  }
-  
-  html += `<div class="item-icon ${isFolder ? (isExpanded ? 'folder-open' : 'folder') : 'note'}">`;
-  html += isFolder ? folderIcon : noteIcon;
+  let html = `<div class="tree-item ${isActive ? 'active' : ''}" data-id="${node.id}" data-type="${node.type}" draggable="${isFolder}">`;
+  if (isFolder && !flat) html += `<div class="toggle-btn ${isExpanded ? 'expanded' : ''}" data-toggle="${node.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  else html += '<div class="toggle-placeholder"></div>';
+  html += `<div class="item-icon ${isFolder ? 'folder' : 'note'}">${icon}</div><div class="item-name">${escapeHtml(node.name)}</div>`;
+  if (isFolder && count > 0 && !flat) html += `<div class="item-count">${count}</div>`;
+  if (node.pinned && !isFolder) html += '<div class="item-pin">⭐</div>';
   html += '</div>';
-  
-  html += '<div class="item-content">';
-  html += `<div class="item-name">${escapeHtml(node.name)}</div>`;
-  
-  if (isFolder && count > 0 && !flat) {
-    html += `<div class="item-meta"><div class="item-count">${count}</div></div>`;
-  }
-  
-  if (node.pinned && !isFolder) {
-    html += '<div class="item-pin">⭐</div>';
-  }
-  
-  html += '</div></div>';
-  
   if (isFolder && isExpanded && children.length > 0 && !flat) {
     html += `<div class="tree-children">`;
-    children.forEach(c => { 
-      html += renderTreeItem(c, depth + 1); 
-    });
+    children.forEach(c => { html += renderTreeItem(c, depth + 1); });
     html += '</div>';
   }
-  
   return html;
 }
-
 function attachTreeEvents() {
   document.querySelectorAll('.tree-item').forEach(el => {
     const id = el.dataset.id, type = el.dataset.type;
     el.addEventListener('click', (e) => {
       if (e.target.closest('.toggle-btn')) return;
-      if (type === 'virtual' || type === 'folder') { 
-        state.currentFolderId = id; 
-        state.currentNoteId = null; 
-        saveToFirestore(); 
-        renderTree(); 
-        renderNotesList(); 
-        renderEditor(); 
-        if (window.innerWidth <= 768) toggleSidebar(false); 
-      } else {
-        selectNode(id);
-      }
+      if (type === 'virtual') { state.currentFolderId = id; state.currentNoteId = null; saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); if (window.innerWidth <= 768) toggleSidebar(false); }
+      else selectNode(id);
     });
     el.addEventListener('contextmenu', (e) => { if (type !== 'virtual') { e.preventDefault(); showContextMenu(e.clientX, e.clientY, id); } });
     let pressTimer;
@@ -975,12 +821,10 @@ function attachTreeEvents() {
       el.addEventListener('drop', (e) => { e.preventDefault(); el.classList.remove('drag-over'); moveNode(e.dataTransfer.getData('text/plain'), id); });
     }
   });
-  
   document.querySelectorAll('.toggle-btn').forEach(el => {
     el.addEventListener('click', (e) => { e.stopPropagation(); state.expanded[el.dataset.toggle] = !state.expanded[el.dataset.toggle]; saveToFirestore(); renderTree(); });
   });
 }
-
 function renderNotesList() {
   const scroll = document.getElementById('notesScroll');
   const titleEl = document.getElementById('notesTitle');
@@ -1013,31 +857,21 @@ function renderNotesList() {
       <div class="note-card-meta"><span>${time}</span>${tags}</div></div>`;
   }).join('');
 }
-
 function isDescendantOf(noteId, folderId) {
   let current = getNode(noteId)?.parentId;
   while (current) { if (current === folderId) return true; current = getNode(current)?.parentId; }
   return false;
 }
-
 function setFilter(f) { state.filter = f; document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f)); renderNotesList(); }
 function selectNote(id) { state.currentNoteId = id; saveToFirestore(); renderNotesList(); renderEditor(); if (window.innerWidth <= 768) document.getElementById('editor').classList.add('active-mobile'); }
 function closeEditorMobile() { document.getElementById('editor').classList.remove('active-mobile'); }
-
 function selectNode(id) {
   const node = getNode(id); if (!node) return;
-  if (node.type === 'note') {
-    state.currentNoteId = id;
-    state.currentFolderId = node.parentId;
-  } else {
-    state.currentFolderId = id;
-    state.expanded[id] = true;
-    const firstNote = state.nodes.find(n => !n.trashed && n.type === 'note' && n.parentId === id);
-    state.currentNoteId = firstNote ? firstNote.id : null;
-  }
+  state.currentFolderId = id; if (node.type === 'folder') state.expanded[id] = true;
+  const firstNote = state.nodes.find(n => !n.trashed && n.type === 'note' && n.parentId === id);
+  state.currentNoteId = firstNote ? firstNote.id : null;
   saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); if (window.innerWidth <= 768) toggleSidebar(false);
 }
-
 function createNote() {
   let parentId = null;
   if (state.currentFolderId && !['__all__', '__pinned__'].includes(state.currentFolderId)) { const c = getNode(state.currentFolderId); if (c?.type === 'folder') parentId = c.id; }
@@ -1047,7 +881,6 @@ function createNote() {
   setTimeout(() => { const ti = document.getElementById('titleInput'); if (ti) { ti.focus(); ti.select(); } }, 100);
   showToast('Catatan dibuat'); if (window.innerWidth <= 768) document.getElementById('editor').classList.add('active-mobile');
 }
-
 function createNoteIn(folderId) {
   const note = { id: uid(), type: 'note', parentId: folderId, name: 'Catatan Baru', content: '', tags: [], pinned: false, createdAt: Date.now(), updatedAt: Date.now() };
   state.nodes.push(note); state.currentNoteId = note.id; state.currentFolderId = folderId; state.expanded[folderId] = true;
@@ -1055,7 +888,6 @@ function createNoteIn(folderId) {
   setTimeout(() => { const ti = document.getElementById('titleInput'); if (ti) { ti.focus(); ti.select(); } }, 100);
   if (window.innerWidth <= 768) document.getElementById('editor').classList.add('active-mobile');
 }
-
 function createFolder() {
   let parentId = null;
   if (state.currentFolderId && !['__all__', '__pinned__'].includes(state.currentFolderId)) { const c = getNode(state.currentFolderId); if (c?.type === 'folder') parentId = c.id; }
@@ -1066,7 +898,6 @@ function createFolder() {
     saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); showToast('Folder dibuat');
   });
 }
-
 function createSubFolder(parentId) {
   showModal('Subfolder Baru', 'Buat subfolder di dalam folder ini', 'Nama subfolder', 'Subfolder Baru', (name) => {
     if (!name.trim()) return;
@@ -1075,7 +906,6 @@ function createSubFolder(parentId) {
     saveToFirestore(); renderTree(); renderNotesList(); showToast('Subfolder dibuat');
   });
 }
-
 function moveNode(sourceId, targetId) {
   if (!sourceId || !targetId || sourceId === targetId) return;
   const source = getNode(sourceId), target = getNode(targetId);
@@ -1085,7 +915,6 @@ function moveNode(sourceId, targetId) {
   source.parentId = targetId; source.updatedAt = Date.now(); state.expanded[targetId] = true;
   saveToFirestore(); renderTree(); renderNotesList(); showToast('Dipindahkan');
 }
-
 function deleteNode(id) {
   const node = getNode(id); if (!node) return;
   if (node.trashed) {
@@ -1106,26 +935,22 @@ function deleteNode(id) {
   }
   saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
 }
-
 function restoreNode(id) {
   const node = getNode(id); if (!node) return;
   const restore = (n) => { n.trashed = false; delete n.trashedAt; state.nodes.filter(c => c.parentId === n.id).forEach(restore); };
   restore(node); saveToFirestore(); renderTree(); renderNotesList(); showToast('Dipulihkan');
 }
-
 function renameNode(id) {
   const node = getNode(id); if (!node) return;
   showModal('Ubah Nama', `Ubah nama ${node.type === 'folder' ? 'folder' : 'catatan'}`, 'Nama baru', node.name, (name) => {
     if (!name.trim()) return; node.name = name.trim(); node.updatedAt = Date.now(); saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
   });
 }
-
 function togglePinNode(id) {
   const node = getNode(id); if (!node || node.type !== 'note') return;
   node.pinned = !node.pinned; node.updatedAt = Date.now(); saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
   showToast(node.pinned ? 'Dipin ⭐' : 'Unpin');
 }
-
 function duplicateNode(id) {
   const node = getNode(id); if (!node) return;
   const clone = JSON.parse(JSON.stringify(node)); clone.id = uid(); clone.name = node.name + ' (salinan)'; clone.createdAt = Date.now(); clone.updatedAt = Date.now();
@@ -1141,7 +966,6 @@ function duplicateNode(id) {
   state.currentFolderId = clone.type === 'folder' ? clone.id : state.currentFolderId;
   saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); showToast('Diduplikat');
 }
-
 function renderEditor() {
   const empty = document.getElementById('emptyState'), content = document.getElementById('editorContent');
   const node = state.currentNoteId ? getNode(state.currentNoteId) : null;
@@ -1153,7 +977,6 @@ function renderEditor() {
   document.getElementById('pinBtn').style.color = node.pinned ? 'var(--accent-amber)' : '';
   updateBreadcrumb(); updateStatus(); updatePreview();
 }
-
 function updateNote() {
   const node = getNode(state.currentNoteId); if (!node || node.type !== 'note') return;
   node.name = document.getElementById('titleInput').value || 'Tanpa Judul';
@@ -1161,16 +984,14 @@ function updateNote() {
   node.tags = document.getElementById('tagsInput').value.split(',').map(t => t.trim()).filter(t => t);
   node.updatedAt = Date.now(); saveToFirestore(); renderNotesList(); renderTree(); updateBreadcrumb(); updateStatus(); updatePreview();
 }
-
 function updateBreadcrumb() {
   const bc = document.getElementById('breadcrumb'); const node = state.currentNoteId ? getNode(state.currentNoteId) : null;
   if (!node) { bc.innerHTML = '<span class="breadcrumb-item current">NotesApp Pro</span>'; return; }
   const path = []; let current = node;
   while (current) { path.unshift(current); current = current.parentId ? getNode(current.parentId) : null; }
-  bc.innerHTML = '<span class="breadcrumb-item" onclick="state.currentNoteId=null;renderNotesList();renderEditor();"> Root</span>' +
+  bc.innerHTML = '<span class="breadcrumb-item" onclick="state.currentNoteId=null;renderNotesList();renderEditor();">Root</span>' +
     path.map((p, i) => `<span class="breadcrumb-sep">›</span><span class="breadcrumb-item ${i === path.length - 1 ? 'current' : ''}" onclick="selectNode('${p.id}')">${escapeHtml(p.name)}</span>`).join('');
 }
-
 function updateStatus() {
   const node = getNode(state.currentNoteId);
   if (!node) { document.getElementById('statusLeft').innerHTML = '<span class="status-dot"></span>Tersimpan di Cloud'; document.getElementById('statusRight').textContent = `${state.nodes.filter(n=>!n.trashed).length} item`; return; }
@@ -1180,18 +1001,14 @@ function updateStatus() {
   document.getElementById('metaStats').textContent = `${words} kata • ${chars} karakter`;
   document.getElementById('metaRead').textContent = `~${Math.max(1, Math.ceil(words / 200))} min read`;
 }
-
 function updatePreview() { if (!state.previewMode) return; document.getElementById('previewContent').innerHTML = renderMarkdown(document.getElementById('contentInput').value); }
-
 function togglePreview() {
   state.previewMode = !state.previewMode;
   const btn = document.getElementById('previewBtn'), ta = document.getElementById('contentInput'), pv = document.getElementById('previewContent');
   if (state.previewMode) { btn.classList.add('active'); ta.style.display = 'none'; pv.style.display = 'block'; updatePreview(); }
   else { btn.classList.remove('active'); ta.style.display = 'block'; pv.style.display = 'none'; }
 }
-
 function togglePin() { const node = getNode(state.currentNoteId); if (node) togglePinNode(node.id); }
-
 function insertMarkdown(before, after) {
   const ta = document.getElementById('contentInput'); if (!ta) return;
   const start = ta.selectionStart, end = ta.selectionEnd, text = ta.value;
@@ -1200,7 +1017,6 @@ function insertMarkdown(before, after) {
   ta.focus(); ta.setSelectionRange(start + before.length, start + before.length + selected.length);
   updateNote();
 }
-
 function renderMarkdown(text) {
   if (!text) return '<p style="color:var(--text-muted); font-style:italic;">Tidak ada konten</p>';
   let html = escapeHtml(text);
@@ -1221,7 +1037,6 @@ function renderMarkdown(text) {
   });
   return html;
 }
-
 function showContextMenu(x, y, id) {
   const node = getNode(id); if (!node) return;
   const menu = document.getElementById('contextMenu'); let items = '';
@@ -1246,27 +1061,23 @@ function showContextMenu(x, y, id) {
   const mw = menu.offsetWidth, mh = menu.offsetHeight, wx = window.innerWidth, wy = window.innerHeight;
   menu.style.left = Math.min(x, wx - mw - 10) + 'px'; menu.style.top = Math.min(y, wy - mh - 10) + 'px';
 }
-
 function hideContextMenu() { document.getElementById('contextMenu').classList.remove('active'); }
-
 function showTrash() {
   const trashed = state.nodes.filter(n => n.trashed);
   if (trashed.length === 0) { showToast('Sampah kosong'); return; }
-  let items = trashed.map(n => `<div style="padding: 8px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-    <div style="flex:1; overflow:hidden;"><div style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:12px;">${escapeHtml(n.name)}</div>
-    <div style="font-size:10px; color:var(--text-muted);">${n.type === 'folder' ? 'Folder' : 'Catatan'} • ${formatTime(n.trashedAt)}</div></div>
+  let items = trashed.map(n => `<div style="padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; background: var(--bg-elevated);">
+    <div style="flex:1; overflow:hidden;"><div style="font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px;">${escapeHtml(n.name)}</div>
+    <div style="font-size:11px; color:var(--text-muted); font-weight: 500;">${n.type === 'folder' ? 'Folder' : 'Catatan'} • ${formatTime(n.trashedAt)}</div></div>
     <button class="icon-btn" onclick="restoreNode('${n.id}');closeModal();showTrash();" title="Pulihkan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
     <button class="icon-btn" style="color:var(--danger);" onclick="deleteNode('${n.id}');closeModal();showTrash();" title="Hapus Permanen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div>`).join('');
-  document.getElementById('modal').innerHTML = `<h3>️ Sampah</h3><p class="modal-subtitle">${trashed.length} item di sampah</p><div style="max-height: 350px; overflow-y: auto;">${items}</div>
-    <div class="modal-actions" style="margin-top: 12px;"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" style="background: var(--danger);" onclick="emptyTrash()">Kosongkan</button></div>`;
+  document.getElementById('modal').innerHTML = `<h3>🗑️ Sampah</h3><p class="modal-subtitle">${trashed.length} item di sampah</p><div style="max-height: 350px; overflow-y: auto;">${items}</div>
+    <div class="modal-actions" style="margin-top: 16px;"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" style="background: var(--danger);" onclick="emptyTrash()">Kosongkan</button></div>`;
   document.getElementById('modalOverlay').classList.add('active');
 }
-
 function emptyTrash() {
   if (!confirm('Hapus semua item di sampah secara permanen?')) return;
   state.nodes = state.nodes.filter(n => !n.trashed); saveToFirestore(); closeModal(); renderTree(); renderNotesList(); renderEditor(); showToast('Sampah dikosongkan');
 }
-
 function showModal(title, subtitle, placeholder, defaultValue, onConfirm) {
   const modal = document.getElementById('modal');
   modal.innerHTML = `<h3>${title}</h3><p class="modal-subtitle">${subtitle}</p><input type="text" id="modalInput" placeholder="${placeholder}" value="${escapeHtml(defaultValue || '')}">
@@ -1277,16 +1088,13 @@ function showModal(title, subtitle, placeholder, defaultValue, onConfirm) {
   document.getElementById('modalConfirm').onclick = () => { onConfirm(input.value); closeModal(); };
   input.onkeydown = (e) => { if (e.key === 'Enter') { onConfirm(input.value); closeModal(); } if (e.key === 'Escape') closeModal(); };
 }
-
 function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-
 function toggleTheme() { 
   state.theme = state.theme === 'light' ? 'dark' : 'light'; 
-  localStorage.setItem('notesapp_theme', state.theme);
+  localStorage.setItem('notesapp_theme', state.theme); 
   saveToFirestore(); 
   applyTheme(); 
 }
-
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
   const icon = document.getElementById('themeIcon');
@@ -1296,17 +1104,13 @@ function applyTheme() {
       : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
   }
 }
-
 function toggleSidebar(force) {
   const sb = document.getElementById('sidebar'), bd = document.getElementById('backdrop');
   const shouldOpen = force !== undefined ? force : !sb.classList.contains('open');
   if (shouldOpen) { sb.classList.add('open'); bd.classList.add('active'); } else { sb.classList.remove('open'); bd.classList.remove('active'); }
 }
-
 function handleSearch() { renderTree(); }
-
 function toggleToolbar() { state.toolbarVisible = !state.toolbarVisible; saveToFirestore(); updateToolbarVisibility(); }
-
 function updateToolbarVisibility() {
   const toolbar = document.getElementById('editorToolbar'), btn = document.getElementById('toolbarToggleBtn'), icon = document.getElementById('toolbarToggleIcon');
   if (state.toolbarVisible) {
@@ -1317,24 +1121,22 @@ function updateToolbarVisibility() {
     icon.innerHTML = '<rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12"/>';
   }
 }
-
 function formatTime(ts) {
   if (!ts) return 'Baru saja';
   const diff = Date.now() - ts, mins = Math.floor(diff / 60000), hours = Math.floor(diff / 3600000), days = Math.floor(diff / 86400000);
   if (mins < 1) return 'Baru saja'; if (mins < 60) return `${mins}m lalu`; if (hours < 24) return `${hours}j lalu`; if (days < 7) return `${days}h lalu`;
   const d = new Date(ts); return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: d.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined });
 }
-
 function showToast(msg, type = 'success') {
   const t = document.getElementById('toast'), msgEl = document.getElementById('toastMsg');
   msgEl.textContent = msg; t.className = `toast ${type}`;
-  t.querySelector('.toast-icon').innerHTML = type === 'error' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 7 15"/></svg>';
+  t.querySelector('.toast-icon').innerHTML = type === 'error' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 7 15"/></svg>';
   setTimeout(() => t.classList.add('show'), 10); setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 function fabAction() {
   document.getElementById('modal').innerHTML = `<h3>Buat Baru</h3><p class="modal-subtitle">Pilih jenis item</p>
-    <button class="btn btn-primary" style="width:100%; margin-bottom:6px;" onclick="createNote(); closeModal();">
+    <button class="btn btn-primary" style="width:100%; margin-bottom:8px;" onclick="createNote(); closeModal();">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Catatan Baru
     </button>
@@ -1376,6 +1178,7 @@ function setupGlobalEventsOnce() {
   }, 2000);
 }
 
+// Auth State Observer
 auth.onAuthStateChanged((user) => {
   if (user) {
     currentUserId = user.uid;
