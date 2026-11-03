@@ -1,0 +1,22 @@
+{
+  "name": "NotesApp Pro",
+  "short_name": "NotesApp",
+  "description": "Aplikasi catatan modern dengan cloud sync dan markdown.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%236366f1'/%3E%3Cpath d='M150 120h212a20 20 0 0 1 20 20v232a20 20 0 0 1-20 20H150a20 20 0 0 1-20-20V140a20 20 0 0 1 20-20z' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M150 200h212M150 260h212M150 320h140' stroke='white' stroke-width='30' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%236366f1'/%3E%3Cpath d='M150 120h212a20 20 0 0 1 20 20v232a20 20 0 0 1-20 20H150a20 20 0 0 1-20-20V140a20 20 0 0 1 20-20z' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M150 200h212M150 260h212M150 320h140' stroke='white' stroke-width='30' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
