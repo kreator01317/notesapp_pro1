@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NotesApp Pro">
+<title>NotesApp Pro</title>
+
+<!-- PWA & Icons -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%236366f1'/%3E%3Cpath d='M150 120h212a20 20 0 0 1 20 20v232a20 20 0 0 1-20 20H150a20 20 0 0 1-20-20V140a20 20 0 0 1 20-20z' fill='none' stroke='white' stroke-width='30'/%3E%3Cpath d='M150 200h212M150 260h212M150 320h140' stroke='white' stroke-width='30' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK (Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<style>
+  :root { 
+    --bg: #f8fafc; 
+    --bg-elevated: rgba(255, 255, 255, 0.85); 
+    --bg-sunken: #f1f5f9; 
+    --bg-hover: rgba(99, 102, 241, 0.06); 
+    --bg-active: rgba(99, 102, 241, 0.12); 
+    --border: rgba(226, 232, 240, 0.8); 
+    --border-strong: rgba(203, 213, 225, 1); 
+    --text: #0f172a; 
+    --text-secondary: #475569; 
+    --text-muted: #94a3b8; 
+    --text-faint: #cbd5e1; 
+    --primary: #6366f1; 
+    --primary-hover: #4f46e5; 
+    --primary-light: rgba(99, 102, 241, 0.1); 
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); 
+    --accent-pink: #ec4899; 
+    --accent-amber: #f59e0b; 
+    --accent-emerald: #10b981; 
+    --danger: #ef4444; 
+    --warning: #f59e0b; 
+    --success: #10b981; 
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02); 
+    --shadow-md: 0 8px 16px -4px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04); 
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04); 
+    --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.12); 
+    --shadow-primary: 0 4px 14px 0 rgba(99, 102, 241, 0.35);
+    --radius-sm: 10px; 
+    --radius: 14px; 
+    --radius-lg: 18px; 
+    --radius-xl: 24px; 
+    --transition: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    --transition-spring: 400ms cubic-bezier(0.16, 1, 0.3, 1); 
+  }
+
+  [data-theme="dark"] { 
+    --bg: #090d16; 
+    --bg-elevated: rgba(17, 24, 39, 0.85); 
+    --bg-sunken: #1e293b; 
+    --bg-hover: rgba(129, 140, 248, 0.1); 
+    --bg-active: rgba(129, 140, 248, 0.2); 
+    --border: rgba(255, 255, 255, 0.08); 
+    --border-strong: rgba(255, 255, 255, 0.16); 
+    --text: #f8fafc; 
+    --text-secondary: #cbd5e1; 
+    --text-muted: #64748b; 
+    --text-faint: #334155; 
+    --primary: #818cf8; 
+    --primary-hover: #6366f1; 
+    --primary-light: rgba(129, 140, 248, 0.15); 
+    --primary-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%); 
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.4); 
+    --shadow-md: 0 8px 16px -4px rgba(0,0,0,0.5); 
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.6); 
+    --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.7); 
+    --shadow-primary: 0 4px 14px 0 rgba(129, 140, 248, 0.4);
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  html, body { height: 100%; overflow: hidden; }
+  
+  body { 
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    font-size: 14.5px; 
+    line-height: 1.6; 
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
+    transition: background var(--transition-spring), color var(--transition-spring); 
+  }
+  
+  /* Premium Ambient Background */
+  body::before { 
+    content: ''; 
+    position: fixed; 
+    top: -10%; right: -5%; 
+    width: 650px; height: 650px; 
+    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%); 
+    pointer-events: none; z-index: 0; opacity: 0.6; filter: blur(80px); 
+    transition: opacity var(--transition-spring);
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -10%; left: -5%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0; filter: blur(80px);
+  }
+  
+  .app { display: flex; height: 100vh; position: relative; z-index: 1; }
+  
+  /* Premium Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; } 
+  ::-webkit-scrollbar-track { background: transparent; } 
+  ::-webkit-scrollbar-thumb { 
+    background: rgba(148, 163, 184, 0.3); 
+    border-radius: 10px; 
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  } 
+  ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.5); }
+  
+  /* Sidebar Redesign */
+  .sidebar { 
+    width: 280px; 
+    background: var(--bg-elevated); 
+    backdrop-filter: blur(24px) saturate(180%); 
+    -webkit-backdrop-filter: blur(24px) saturate(180%); 
+    border-right: 1px solid var(--border); 
+    display: flex; flex-direction: column; 
+    transition: transform var(--transition-spring), width var(--transition-spring); 
+    flex-shrink: 0; position: relative; z-index: 10; 
+  }
+  
+  .sidebar-header { padding: 20px 16px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.02em; }
+  .logo-icon { 
+    width: 36px; height: 36px; 
+    background: var(--primary-gradient); 
+    border-radius: 11px; 
+    display: flex; align-items: center; justify-content: center; 
+    color: white; box-shadow: var(--shadow-primary); 
+    transition: transform var(--transition);
+  }
+  .logo-icon:hover { transform: scale(1.05); }
+  .logo-icon svg { width: 18px; height: 18px; }
+  
+  .icon-btn { 
+    width: 36px; height: 36px; 
+    border: none; background: transparent; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    display: flex; align-items: center; justify-content: center; 
+    color: var(--text-secondary); 
+    transition: all var(--transition); 
+    touch-action: manipulation;
+  }
+  .icon-btn:hover { background: var(--bg-hover); color: var(--primary); transform: translateY(-1px); } 
+  .icon-btn:active { transform: scale(0.92); } 
+  .icon-btn svg { width: 18px; height: 18px; }
+  
+  .search-box { padding: 0 16px 14px; }
+  .search-wrapper { position: relative; }
+  .search-input { 
+    width: 100%; 
+    padding: 10px 12px 10px 38px; 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius-sm); 
+    background: var(--bg-sunken); 
+    color: var(--text); 
+    font-size: 13.5px; 
+    outline: none; 
+    transition: all var(--transition); 
+    font-family: inherit; 
+  }
+  .search-input:focus { border-color: var(--primary); background: var(--bg); box-shadow: 0 0 0 3px var(--primary-light); } 
+  .search-wrapper svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+  
+  .action-buttons { padding: 0 16px 16px; display: flex; gap: 8px; }
+  .btn { 
+    flex: 1; padding: 10px 12px; 
+    border: none; border-radius: var(--radius-sm); 
+    font-size: 13px; font-weight: 600; 
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; 
+    transition: all var(--transition); font-family: inherit; touch-action: manipulation;
+  }
+  .btn-primary { background: var(--primary-gradient); color: white; box-shadow: var(--shadow-primary); position: relative; overflow: hidden; }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(255,255,255,0.2), transparent); opacity: 0; transition: opacity 0.2s;
+  }
+  .btn-primary:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); transform: translateY(-1px); }
+  .btn-primary:hover::after { opacity: 1; }
+  .btn-secondary { background: var(--bg-sunken); color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--bg-hover); border-color: var(--primary); color: var(--primary); }
+  .btn svg { width: 16px; height: 16px; }
+  
+  .section-label { padding: 12px 16px 8px; font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .tree-container { flex: 1; overflow-y: auto; padding: 4px 8px 8px; }
+  
+  .tree-item { 
+    display: flex; align-items: center; 
+    padding: 9px 10px; border-radius: var(--radius-sm); 
+    cursor: pointer; user-select: none; 
+    transition: all var(--transition); gap: 8px; 
+    font-size: 13.5px; font-weight: 500; color: var(--text-secondary); 
+    margin: 2px 0; position: relative;
+  }
+  .tree-item:hover { background: var(--bg-hover); color: var(--text); }
+  .tree-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+  .tree-item.active::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--primary-gradient); border-radius: 0 4px 4px 0; }
+  
+  .toggle-btn { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: transform var(--transition); flex-shrink: 0; border-radius: 4px; }
+  .toggle-btn:hover { background: var(--bg-hover); color: var(--text); }
+  .toggle-btn.expanded { transform: rotate(90deg); } 
+  .toggle-btn svg { width: 14px; height: 14px; }
+  .toggle-placeholder { width: 20px; flex-shrink: 0; }
+  
+  .item-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .item-icon svg { width: 16px; height: 16px; } 
+  .item-icon.folder { color: var(--accent-amber); } 
+  .item-icon.note { color: var(--primary); }
+  .item-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-count { font-size: 10.5px; color: var(--text-muted); background: var(--bg-sunken); padding: 2px 6px; border-radius: 6px; font-weight: 700; border: 1px solid var(--border); }
+  
+  .tree-children { margin-left: 12px; padding-left: 8px; border-left: 1.5px solid var(--border); }
+  .sidebar-footer { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: rgba(255,255,255,0.4); backdrop-filter: blur(12px); }
+  [data-theme="dark"] .sidebar-footer { background: rgba(17, 24, 39, 0.4); }
+  
+  /* Notes List Section */
+  .notes-list { width: 320px; background: var(--bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; transition: transform var(--transition-spring); }
+  .notes-header { padding: 18px 20px 16px; border-bottom: 1px solid var(--border); background: var(--bg-elevated); backdrop-filter: blur(24px) saturate(180%); }
+  .notes-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+  .notes-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+  
+  .notes-filter { padding: 10px 16px; display: flex; gap: 6px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .filter-btn { flex: 1; padding: 7px 8px; border: none; background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all var(--transition); touch-action: manipulation; }
+  .filter-btn:hover { color: var(--text); background: var(--bg-hover); } 
+  .filter-btn.active { background: var(--primary-light); color: var(--primary); font-weight: 700; }
+  
+  .notes-scroll { flex: 1; overflow-y: auto; padding: 12px; }
+  .note-card { 
+    padding: 14px 16px; border-radius: var(--radius); 
+    cursor: pointer; transition: all var(--transition); margin-bottom: 8px; 
+    border: 1px solid var(--border); background: var(--bg-elevated); 
+    position: relative; overflow: hidden;
+  }
+  .note-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--primary); transition: width 0.2s;
+  }
+  .note-card:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.note-card.active { 
+  background: var(--primary-light); 
+  border-color: var(--border); /* Kembali ke border normal */
+}
+.note-card.active::before { 
+  width: 0; /* Hilangkan bar ungu di kiri */
+}
+  
+  .note-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; line-height: 1.3; }
+  .note-card-pin { color: var(--accent-amber); font-size: 12px; }
+  .note-card-preview { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 10px; }
+  .note-card-meta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .note-card-tag { padding: 2px 6px; background: var(--bg-sunken); border-radius: 4px; font-size: 10.5px; font-weight: 600; color: var(--text-secondary); border: 1px solid var(--border); }
+  
+  /* Editor Modern Optimization */
+  .editor { flex: 1; display: flex; flex-direction: column; background: var(--bg); min-width: 0; position: relative; transition: transform var(--transition-spring); }
+  
+  .editor-header { 
+    padding: 10px 24px; 
+    border-bottom: 1px solid var(--border); 
+    display: flex; align-items: center; gap: 8px; 
+    background: var(--bg-elevated); backdrop-filter: blur(24px) saturate(180%); 
+    min-height: 52px; 
+  }
+  
+  .breadcrumb { flex: 1; font-size: 12.5px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 6px; overflow: hidden; white-space: nowrap; }
+  .breadcrumb-item { cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: all var(--transition); }
+  .breadcrumb-item:hover { background: var(--bg-hover); color: var(--primary); } 
+  .breadcrumb-item.current { color: var(--text); font-weight: 700; cursor: default; }
+  .breadcrumb-item.current:hover { background: transparent; color: var(--text); }
+  .breadcrumb-sep { color: var(--text-faint); font-size: 11px; }
+  
+  .editor-toolbar { 
+    padding: 8px 24px; 
+    border-bottom: 1px solid var(--border); 
+    display: flex; gap: 4px; flex-wrap: wrap; 
+    background: var(--bg); 
+    align-items: center; 
+    transition: all var(--transition);
+  }
+  .editor-toolbar.hidden { display: none; }
+  .tool-btn { 
+    padding: 6px 8px; border: none; background: transparent; 
+    color: var(--text-secondary); border-radius: 6px; 
+    cursor: pointer; font-size: 12px; font-weight: 600; 
+    display: flex; align-items: center; gap: 4px; 
+    transition: all var(--transition); font-family: inherit; touch-action: manipulation;
+  }
+  .tool-btn:hover { background: var(--bg-hover); color: var(--primary); } 
+  .tool-btn.active { background: var(--primary-light); color: var(--primary); } 
+  .tool-btn svg { width: 15px; height: 15px; }
+  .tool-divider { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+  
+  .editor-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+  .title-input { 
+    width: 100%; max-width: 800px;
+    padding: 32px 32px 8px; 
+    border: none; background: transparent; 
+    font-size: 32px; font-weight: 800; 
+    color: var(--text); outline: none; 
+    letter-spacing: -0.03em; line-height: 1.2; font-family: inherit; 
+    transition: color var(--transition);
+  }
+  .title-input::placeholder { color: var(--text-faint); }
+  
+  .meta-row { 
+    width: 100%; max-width: 800px;
+    padding: 0 32px 12px; 
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center; 
+    font-size: 12px; color: var(--text-muted); font-weight: 500; 
+  }
+  .meta-item { display: flex; align-items: center; gap: 5px; } 
+  .meta-item svg { width: 14px; height: 14px; }
+  
+  .tags-input { 
+    width: 100%; max-width: 800px;
+    padding: 0 32px 16px; 
+    border: none; background: transparent; 
+    color: var(--primary); font-size: 13px; font-weight: 600; outline: none; font-family: inherit; 
+  }
+  .tags-input::placeholder { color: var(--text-faint); font-weight: 400; }
+  
+  .content-area { 
+    flex: 1; width: 100%; max-width: 800px;
+    padding: 0 32px 60px; 
+    display: flex; flex-direction: column;
+  }
+  .editor-textarea { 
+    width: 100%; flex: 1; min-height: 400px;
+    border: none; background: transparent; 
+    color: var(--text); font-size: 16px; line-height: 1.8; 
+    outline: none; resize: none; 
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; 
+  }
+  .editor-textarea::placeholder { color: var(--text-faint); } 
+  
+  .preview { font-size: 16px; line-height: 1.8; color: var(--text); width: 100%; }
+  .preview h1 { font-size: 1.8em; font-weight: 800; margin: 1em 0 0.5em; letter-spacing: -0.02em; }
+  .preview h2 { font-size: 1.4em; font-weight: 700; margin: 1em 0 0.5em; }
+  .preview h3 { font-size: 1.15em; font-weight: 600; margin: 1em 0 0.5em; }
+  .preview p { margin: 0.8em 0; } 
+  .preview ul, .preview ol { margin: 0.8em 0; padding-left: 24px; } 
+  .preview code { background: var(--bg-sunken); padding: 3px 6px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--primary); border: 1px solid var(--border); }
+  .preview pre { background: var(--bg-sunken); padding: 16px; border-radius: var(--radius-sm); overflow-x: auto; margin: 1em 0; border: 1px solid var(--border); }
+  .preview pre code { background: transparent; padding: 0; color: var(--text); border: none; }
+  .preview blockquote { border-left: 4px solid var(--primary); padding: 8px 16px; color: var(--text-secondary); margin: 1em 0; background: var(--primary-light); border-radius: 0 8px 8px 0; font-style: italic; }
+  .preview a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; font-weight: 600; transition: opacity 0.2s; }
+  .preview a:hover { opacity: 0.8; }
+  
+  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); padding: 40px; text-align: center; animation: fadeIn 0.4s ease-out; }
+  .empty-illustration { width: 120px; height: 120px; margin-bottom: 20px; position: relative; }
+  .empty-illustration::before { content: ''; position: absolute; inset: 0; background: var(--primary-gradient); border-radius: 50%; opacity: 0.1; animation: pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(1.05); opacity: 0.15; } }
+  .empty-illustration svg { position: relative; width: 100%; height: 100%; color: var(--primary); padding: 32px; }
+  
+  .status-bar { padding: 8px 24px; border-top: 1px solid var(--border); font-size: 11.5px; color: var(--text-muted); display: flex; justify-content: space-between; background: var(--bg-elevated); backdrop-filter: blur(12px); font-weight: 600; align-items: center; }
+  .status-dot { display: inline-block; width: 7px; height: 7px; background: var(--success); border-radius: 50%; margin-right: 6px; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  
+  /* Modals & Menus */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.2s; }
+  .modal-overlay.active { display: flex; opacity: 1; animation: fadeIn 0.2s ease-out; }
+  .modal { background: var(--bg-elevated); border-radius: var(--radius-xl); padding: 24px; width: 90%; max-width: 400px; box-shadow: var(--shadow-xl); border: 1px solid var(--border); animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes modalSlideUp { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  
+  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .modal-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+  .modal input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; margin-bottom: 20px; font-family: inherit; transition: all var(--transition); }
+  .modal input:focus { border-color: var(--primary); background: var(--bg); box-shadow: 0 0 0 3px var(--primary-light); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  
+  .context-menu { position: fixed; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); padding: 6px; min-width: 190px; z-index: 999; display: none; backdrop-filter: blur(20px) saturate(180%); animation: fadeIn 0.15s ease-out; }
+  .context-menu.active { display: block; }
+  .context-item { padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 500; transition: all 0.15s; }
+  .context-item:hover { background: var(--bg-hover); color: var(--primary); }
+  .context-item.danger { color: var(--danger); } 
+  .context-item.danger:hover { background: rgba(239, 68, 68, 0.1); }
+  .context-item svg { width: 15px; height: 15px; flex-shrink: 0; } 
+  .context-sep { height: 1px; background: var(--border); margin: 6px 0; }
+  
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 12px 20px; border-radius: 12px; box-shadow: var(--shadow-xl); z-index: 2000; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; pointer-events: none; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .toast.success .toast-icon { background: var(--success); color: white; } 
+  .toast.error .toast-icon { background: var(--danger); color: white; }
+  
+  .menu-toggle, .back-toggle { display: none; }
+  .backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 9; transition: opacity 0.3s; }
+  .backdrop.active { display: block; }
+  
+  .drag-ghost { position: fixed; pointer-events: none; background: var(--primary-gradient); color: white; padding: 8px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; box-shadow: var(--shadow-lg); z-index: 9999; display: none; }
+  
+  .fab { display: none; position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: var(--primary-gradient); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-primary); z-index: 50; align-items: center; justify-content: center; transition: transform var(--transition); touch-action: manipulation; }
+  .fab:hover { transform: scale(1.05); }
+  .fab:active { transform: scale(0.95); }
+  .fab svg { width: 24px; height: 24px; }
+  
+  /* Mobile Optimizations */
+  @media (max-width: 1024px) { .notes-list { width: 280px; } }
+  @media (max-width: 768px) {
+    .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); width: 85%; max-width: 300px; box-shadow: var(--shadow-xl); z-index: 100; }
+    .sidebar.open { transform: translateX(0); } 
+    .menu-toggle { display: flex; }
+    .notes-list { position: absolute; inset: 0; width: 100%; transform: translateX(0); z-index: 5; }
+    .notes-list.hidden-mobile { transform: translateX(-100%); } 
+    .back-toggle { display: flex; }
+    .editor { position: absolute; inset: 0; transform: translateX(100%); z-index: 6; background: var(--bg); }
+    .editor.active-mobile { transform: translateX(0); }
+    .title-input { font-size: 24px; padding: 20px 20px 8px; } 
+    .meta-row, .tags-input { padding: 0 20px 12px; } 
+    .content-area { padding: 0 20px 40px; }
+    .editor-header, .editor-toolbar, .status-bar { padding: 8px 16px; } 
+    .fab { display: flex; } 
+    .app { position: relative; overflow: hidden; }
+  }
+  @media (max-width: 480px) { .title-input { font-size: 22px; } .editor-textarea, .preview { font-size: 15px; } }
+  
+  .loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .loading-overlay.active { display: flex; animation: fadeIn 0.3s; }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--bg-sunken); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  
+  .auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .auth-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 36px; width: 100%; max-width: 400px; box-shadow: var(--shadow-xl); text-align: center; animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .auth-logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; }
+  .auth-logo h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .auth-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; font-weight: 500; line-height: 1.5; }
+  .auth-error { background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); padding: 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 20px; display: none; text-align: left; line-height: 1.4; }
+  .auth-error:not(:empty) { display: block; animation: fadeIn 0.2s; }
+  .auth-form { text-align: left; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 11.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-sunken); color: var(--text); font-size: 14px; outline: none; font-family: inherit; transition: all var(--transition); }
+  .form-group input:focus { border-color: var(--primary); background: var(--bg); box-shadow: 0 0 0 3px var(--primary-light); }
+  .auth-btn { width: 100%; padding: 12px; font-size: 14px; margin-top: 8px; border-radius: var(--radius-sm); }
+  .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .auth-footer { margin-top: 24px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .auth-footer a { color: var(--primary); font-weight: 700; text-decoration: none; }
+
+  /* Badges & Links */
+  .id-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; margin-left: 4px;
+    background: var(--primary-gradient); color: white; border-radius: 6px;
+    font-size: 11px; cursor: pointer; vertical-align: middle; transition: transform 0.2s;
+  }
+  .id-badge:hover { transform: scale(1.1); }
+  .token-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; margin: 0 4px;
+    background: rgba(239, 68, 68, 0.1); color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600;
+    cursor: pointer; vertical-align: middle; transition: all 0.2s;
+  }
+  .token-badge:hover { background: rgba(239, 68, 68, 0.2); transform: translateY(-1px); }
+  .smart-link { display: inline-flex; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">Memuat catatan dari cloud...</div>
+</div>
+
+<!-- Auth Overlay -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <h2>NotesApp Pro</h2>
+    </div>
+    <h3 id="authTitle">Selamat Datang Kembali</h3>
+    <p class="auth-subtitle">Masuk untuk mengakses catatan Anda di semua perangkat dengan sinkronisasi real-time.</p>
+    <div class="auth-error" id="authError"></div>
+    <div class="auth-form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="authEmail" placeholder="nama@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="Minimal 6 karakter" autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary auth-btn" id="authSubmitBtn" onclick="handleAuth()">Masuk</button>
+    </div>
+    <div class="auth-footer">
+      <span id="authModePrompt">Belum punya akun?</span>
+      <a href="#" onclick="toggleAuthMode(); return false;" id="authModeText">Daftar</a>
+    </div>
+  </div>
+</div>
+
+<div class="app" id="appContainer" style="display: none;">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <span>NotesApp Pro</span>
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" title="Ganti Tema" id="themeBtn">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+    <div class="search-box">
+      <div class="search-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Cari catatan..." oninput="handleSearch()">
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="createNote()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Catatan
+      </button>
+      <button class="btn btn-secondary" onclick="createFolder()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Folder
+      </button>
+    </div>
+    <div class="section-label"><span>Folder</span></div>
+    <div class="tree-container" id="treeContainer"></div>
+    <div class="sidebar-footer" style="flex-direction: column; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding: 4px;">
+        <div style="width: 32px; height: 32px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; border: 1px solid var(--border);">👤</div>
+        <div style="flex: 1; overflow: hidden;">
+          <div style="font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userEmailDisplay">user@email.com</div>
+          <div style="font-size: 10.5px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; background: var(--success); border-radius: 50%;"></span> Cloud Sync Aktif</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px; width: 100%;">
+        <button class="icon-btn" onclick="showTrash()" title="Sampah" style="flex:1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+        <button class="icon-btn" onclick="showExportModal()" title="Ekspor Data" style="flex:1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </button>
+        <button class="icon-btn" onclick="document.getElementById('importFile').click()" title="Import" style="flex:1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </button>
+        <button class="icon-btn" onclick="handleLogout()" title="Keluar" style="flex:1; color: var(--danger);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+  </aside>
+
+  <div class="backdrop" id="backdrop" onclick="toggleSidebar(false)"></div>
+
+  <section class="notes-list" id="notesList">
+    <div class="notes-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button class="icon-btn menu-toggle" onclick="toggleSidebar(true)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div style="flex:1;">
+          <div class="notes-title" id="notesTitle">Semua Catatan</div>
+          <div class="notes-subtitle" id="notesSubtitle">0 catatan</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes-filter">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
+      <button class="filter-btn" data-filter="pinned" onclick="setFilter('pinned')">⭐ Dipin</button>
+      <button class="filter-btn" data-filter="recent" onclick="setFilter('recent')">Terbaru</button>
+    </div>
+    <div class="notes-scroll" id="notesScroll"></div>
+  </section>
+
+  <main class="editor" id="editor">
+    <div class="editor-header">
+      <button class="icon-btn back-toggle" onclick="closeEditorMobile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+      
+      <button class="icon-btn" onclick="togglePin()" id="pinBtn" title="Pin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 7h3l-5 7-5-7h3z"/></svg>
+      </button>
+      
+      <button class="icon-btn" onclick="togglePreview()" id="headerPreviewBtn" title="Toggle Preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+
+      <button class="icon-btn" onclick="toggleToolbar()" id="toolbarToggleBtn" title="Toggle Toolbar">
+        <svg id="toolbarToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      </button>
+      <button class="icon-btn" onclick="showMoreMenu(event)" title="Lainnya" id="moreMenuBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      </button>
+    </div>
+
+    <div id="editorArea" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-illustration">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px;">Mulai Menulis</h2>
+        <p style="font-size: 14px; max-width: 300px; line-height: 1.6;">Pilih catatan dari daftar atau buat catatan baru untuk mulai menuangkan ide-ide kamu.</p>
+        <button class="btn btn-primary" onclick="createNote()" style="width: auto; padding: 10px 20px; margin-top: 20px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Buat Catatan Baru
+        </button>
+      </div>
+
+      <div id="editorContent" style="display:none; flex:1; flex-direction:column; overflow:hidden; width:100%;">
+        <div class="editor-toolbar" id="editorToolbar">
+          <button class="tool-btn" onclick="insertMarkdown('**', '**')" title="Bold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6zM6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg></button>
+          <button class="tool-btn" onclick="insertMarkdown('*', '*')" title="Italic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg></button>
+          <button class="tool-btn" onclick="insertMarkdown('~~', '~~')" title="Strikethrough"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6M4 12h16"/></svg></button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" onclick="insertMarkdown('# ', '')" title="H1">H1</button>
+          <button class="tool-btn" onclick="insertMarkdown('## ', '')" title="H2">H2</button>
+          <button class="tool-btn" onclick="insertMarkdown('### ', '')" title="H3">H3</button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" onclick="insertMarkdown('- ', '')" title="List"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+          <button class="tool-btn" onclick="insertMarkdown('- [ ] ', '')" title="Checklist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" onclick="insertMarkdown('> ', '')" title="Quote"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg></button>
+          <button class="tool-btn" onclick="insertMarkdown('`', '`')" title="Code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></button>
+          <button class="tool-btn" onclick="insertMarkdown('[', '](url)')" title="Link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+          <div class="tool-divider"></div>
+          <button class="tool-btn" onclick="togglePreview()" id="previewBtn" title="Preview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>
+        </div>
+        
+        <div class="editor-content">
+          <input type="text" class="title-input" id="titleInput" placeholder="Judul catatan..." oninput="updateNote()">
+          <div class="meta-row" id="metaRow">
+            <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="metaTime">Baru saja</span></div>
+            <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span id="metaStats">0 kata • 0 karakter</span></div>
+            <div class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="metaRead">~1 min read</span></div>
+          </div>
+          <input type="text" class="tags-input" id="tagsInput" placeholder="🏷️ Tags (pisahkan dengan koma)..." oninput="updateNote()">
+          <div class="content-area">
+            <textarea class="editor-textarea" id="contentInput" placeholder="Mulai menulis... (mendukung Markdown)" oninput="updateNote()"></textarea>
+            <div class="preview" id="previewContent" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-bar" id="statusBar">
+      <span id="statusLeft"><span class="status-dot"></span>Tersimpan di Cloud</span>
+      <span id="statusRight">NotesApp Pro v3.7</span>
+    </div>
+  </main>
+</div>
+
+<button class="fab" onclick="fabAction()" id="fab" title="Buat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
+<div class="context-menu" id="contextMenu"></div>
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 7 15"/></svg></div>
+  <span id="toastMsg">Berhasil</span>
+</div>
+<div class="drag-ghost" id="dragGhost"></div>
+
+<script>
+// ========== FIREBASE CONFIG ==========
+const firebaseConfig = {
+  apiKey: "AIzaSyCNxkZMnSXWP-kVuKGYUN7dOORC-Hb_4ko",
+  authDomain: "noted-app-1a9c2.firebaseapp.com",
+  projectId: "noted-app-1a9c2",
+  storageBucket: "noted-app-1a9c2.firebasestorage.app",
+  messagingSenderId: "688617687012",
+  appId: "1:688617687012:web:05c8d00f5d1db3b429e9f1"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUserId = null;
+let unsubscribeFirestore = null;
+let saveTimeout = null;
+
+let state = { 
+  nodes: [], currentFolderId: null, currentNoteId: null, expanded: {}, 
+  theme: localStorage.getItem('notesapp_theme') || 'light', previewMode: false, filter: 'all', toolbarVisible: true 
+};
+
+// ========== STABILITY: DEBOUNCE UTILS ==========
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// ========== HISTORY & BACK NAVIGATION ==========
+function pushAppState(viewName) { history.pushState({ view: viewName }, '', window.location.href); }
+function handleBackNavigation() {
+  if (document.getElementById('contextMenu').classList.contains('active')) { hideContextMenu(); pushAppState('base'); return true; }
+  if (document.getElementById('modalOverlay').classList.contains('active')) { closeModal(); return true; }
+  if (window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('open')) { toggleSidebar(false); return true; }
+  if (window.innerWidth <= 768 && document.getElementById('editor').classList.contains('active-mobile')) { closeEditorMobile(); return true; }
+  return false;
+}
+window.addEventListener('popstate', (event) => {
+  if (!handleBackNavigation() && window.innerWidth <= 768) pushAppState('base');
+});
+
+// ========== AUTH FUNCTIONS ==========
+window.toggleAuthMode = function() {
+  const modeSpan = document.getElementById('authModeText'), title = document.getElementById('authTitle'), submitBtn = document.getElementById('authSubmitBtn'), prompt = document.getElementById('authModePrompt'), error = document.getElementById('authError');
+  if (modeSpan.textContent === 'Daftar') {
+    modeSpan.textContent = 'Masuk'; title.textContent = 'Selamat Datang Kembali'; submitBtn.textContent = 'Masuk'; prompt.textContent = 'Belum punya akun?';
+  } else {
+    modeSpan.textContent = 'Daftar'; title.textContent = 'Buat Akun Baru'; submitBtn.textContent = 'Daftar'; prompt.textContent = 'Sudah punya akun?';
+  }
+  error.textContent = '';
+};
+
+window.handleAuth = async function() {
+  const email = document.getElementById('authEmail').value.trim(), password = document.getElementById('authPassword').value;
+  const isRegister = document.getElementById('authModeText').textContent === 'Daftar', errorEl = document.getElementById('authError'), submitBtn = document.getElementById('authSubmitBtn');
+  if (!email || !password) { errorEl.textContent = 'Email dan password wajib diisi.'; return; }
+  errorEl.textContent = 'Memproses...'; submitBtn.disabled = true;
+  try {
+    if (isRegister) await auth.createUserWithEmailAndPassword(email, password);
+    else await auth.signInWithEmailAndPassword(email, password);
+  } catch (error) {
+    let msg = error.message;
+    if (msg.includes('auth/invalid-email')) msg = 'Format email tidak valid.';
+    else if (msg.includes('auth/user-not-found') || msg.includes('auth/wrong-password') || msg.includes('auth/invalid-credential')) msg = 'Email atau password salah.';
+    else if (msg.includes('auth/email-already-in-use')) msg = 'Email sudah terdaftar.';
+    else if (msg.includes('auth/weak-password')) msg = 'Password minimal 6 karakter.';
+    else msg = msg.replace('Firebase: ', '').replace(' (auth/', '').replace(').', '');
+    errorEl.textContent = msg; submitBtn.disabled = false;
+  }
+};
+
+window.handleLogout = async function() {
+  if (confirm('Yakin ingin keluar?')) {
+    if (unsubscribeFirestore) unsubscribeFirestore();
+    await auth.signOut();
+  }
+};
+
+// ========== FIRESTORE SYNC FUNCTIONS ==========
+function loadFromFirestore(uid) {
+  document.getElementById('loadingOverlay').classList.add('active');
+  document.getElementById('authOverlay').style.display = 'none';
+  applyTheme();
+
+  unsubscribeFirestore = db.collection('users').doc(uid).onSnapshot((doc) => {
+    document.getElementById('loadingOverlay').classList.remove('active');
+    document.getElementById('appContainer').style.display = 'flex';
+    if (doc.exists) {
+      state = { ...state, ...doc.data() };
+      applyTheme(); 
+    } else {
+      const wf = { id: uid(), type: 'folder', parentId: null, name: '📚 Panduan', createdAt: Date.now(), updatedAt: Date.now() };
+      const wn = { id: uid(), type: 'note', parentId: wf.id, name: 'Selamat Datang di NotesApp Pro 🎉', content: `# Selamat Datang! 👋\n\nAplikasi catatan modern dengan desain premium.\n\n## ✨ Fitur Utama\n- ☁️ **Cloud Sync**: Catatan otomatis tersimpan.\n- 📁 **Folder & Subfolder** tanpa batas\n- 🌙 **Dark Mode**\n\n## 📝 Markdown & Auto-Link\n- **Bold** dengan \`**text**\`\n- *Italic* dengan \`*text*\`\n- 🔗 **Auto URL/Email**: Ketik https://google.com atau admin@contoh.com\n- 🆔 **Ekstraksi ID**: Paste link Google Drive/YouTube, ID akan otomatis terdeteksi.\n- 🔒 **Deteksi Token**: Paste JSON token, bagian tengah akan disensor demi keamanan, tapi bisa disalin utuh.\n\n> Tips: Coba buka aplikasi ini di browser lain dan login dengan akun yang sama!`, tags: ['welcome'], pinned: true, createdAt: Date.now(), updatedAt: Date.now() };
+      state.nodes.push(wf, wn);
+      state.currentFolderId = null; state.currentNoteId = wn.id; state.expanded[wf.id] = true;
+      saveToFirestore();
+    }
+    renderTree(); renderNotesList(); renderEditor(); updateToolbarVisibility();
+    setupGlobalEventsOnce();
+  }, (error) => {
+    console.error("Firestore error:", error);
+    document.getElementById('loadingOverlay').classList.remove('active');
+    document.getElementById('authOverlay').style.display = 'flex';
+    document.getElementById('authError').textContent = 'Gagal memuat data. Pastikan Firestore sudah diaktifkan.';
+  });
+}
+
+function saveToFirestore() {
+  if (!currentUserId) return;
+  try {
+    db.collection('users').doc(currentUserId).set(state, { merge: true }).catch(err => console.error("Gagal menyimpan:", err));
+  } catch (e) {
+    console.error("Save error:", e);
+  }
+}
+
+// Optimized Save Scheduler (Debounced)
+function scheduleSave() {
+  const statusLeft = document.getElementById('statusLeft');
+  if (statusLeft) statusLeft.innerHTML = '<span class="status-dot" style="background: var(--warning); animation: pulse-dot 1s infinite;"></span>Menyimpan...';
+  
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    try {
+      saveToFirestore();
+      renderNotesList();
+      renderTree();
+      if (statusLeft) statusLeft.innerHTML = '<span class="status-dot"></span>Tersimpan di Cloud';
+    } catch (e) {
+      console.error("Save error:", e);
+      if (statusLeft) statusLeft.innerHTML = '<span class="status-dot" style="background: var(--danger);"></span>Gagal menyimpan';
+      showToast('Gagal menyimpan ke cloud', 'error');
+    }
+  }, 800); // 800ms debounce for smooth typing
+}
+
+// ========== APP UI FUNCTIONS ==========
+function uid() { return Date.now().toString(36) + Math.random().toString(36).substring(2, 11); }
+function getNode(id) { return state.nodes.find(n => n.id === id); }
+function escapeHtml(s) { if (!s) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function getDateStr() { return new Date().toISOString().split('T')[0]; }
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type: type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showExportModal() {
+  document.getElementById('modal').innerHTML = `
+    <h3>Ekspor Data</h3><p class="modal-subtitle">Pilih format file untuk backup</p>
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsJSON()">📄 JSON (Backup Lengkap)</button>
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsTXT()">📝 TXT (Semua Catatan)</button>
+    <button class="btn btn-secondary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="exportAsCSV()">📊 CSV (Data Tabel)</button>
+    <button class="btn btn-secondary" style="width:100%; justify-content:flex-start;" onclick="exportAsPDF()">🖨️ PDF (Print)</button>
+    <div class="modal-actions" style="margin-top: 20px;"><button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>`;
+  document.getElementById('modalOverlay').classList.add('active'); pushAppState('modal');
+}
+function exportAsJSON() { downloadFile(JSON.stringify(state, null, 2), `notesapp-backup-${getDateStr()}.json`, 'application/json'); closeModal(); showToast('Berhasil diekspor ke JSON'); }
+function exportAsTXT() {
+  let txt = "NOTESAPP PRO EXPORT\nGenerated: " + new Date().toLocaleString('id-ID') + "\n" + "=".repeat(50) + "\n\n";
+  const buildTxt = (node, depth) => {
+    const indent = "  ".repeat(depth);
+    if (node.type === 'folder') {
+      txt += `${indent}📁 ${node.name}\n`;
+      state.nodes.filter(n => !n.trashed && n.parentId === node.id).forEach(child => buildTxt(child, depth + 1));
+    } else {
+      txt += `${indent}📄 ${node.name}\n${indent}   Tags: ${(node.tags || []).join(', ') || 'Tidak ada'}\n${indent}   ${"-".repeat(40)}\n${indent}   ${node.content || '(Kosong)'}\n${indent}   ${"-".repeat(40)}\n\n`;
+    }
+  };
+  state.nodes.filter(n => !n.trashed && n.parentId === null).forEach(root => buildTxt(root, 0));
+  downloadFile(txt, `notesapp-export-${getDateStr()}.txt`, 'text/plain'); closeModal(); showToast('Berhasil diekspor ke TXT');
+}
+function exportFolder(folderId) {
+  const folder = getNode(folderId); if (!folder) return;
+  let txt = `FOLDER: ${folder.name}\nExported: ` + new Date().toLocaleString('id-ID') + "\n" + "=".repeat(50) + "\n\n";
+  const collectNotes = (parentId, depth) => {
+    state.nodes.filter(n => !n.trashed && n.parentId === parentId).forEach(child => {
+      if (child.type === 'folder') { txt += "  ".repeat(depth) + `📁 ${child.name}\n`; collectNotes(child.id, depth + 1); }
+      else { txt += "  ".repeat(depth) + `📄 ${child.name}\n${"  ".repeat(depth)}   Tags: ${(child.tags || []).join(', ') || 'Tidak ada'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n${"  ".repeat(depth)}   ${child.content || '(Kosong)'}\n${"  ".repeat(depth)}   ${"-".repeat(30)}\n\n`; }
+    });
+  };
+  collectNotes(folderId, 0);
+  downloadFile(txt, `folder-${folder.name.replace(/[^a-z0-9]/gi, '_')}-${getDateStr()}.txt`, 'text/plain'); showToast(`Folder "${folder.name}" berhasil didownload`);
+}
+function exportNote(noteId) {
+  const note = getNode(noteId); if (!note || note.type !== 'note') return;
+  let txt = `JUDUL: ${note.name}\nTags: ${(note.tags || []).join(', ')}\nDibuat: ${new Date(note.createdAt).toLocaleString('id-ID')}\nTerakhir diubah: ${new Date(note.updatedAt).toLocaleString('id-ID')}\n` + "=".repeat(50) + "\n\n" + (note.content || '(Kosong)');
+  downloadFile(txt, `note-${note.name.replace(/[^a-z0-9]/gi, '_')}-${getDateStr()}.txt`, 'text/plain'); showToast(`Catatan "${note.name}" berhasil didownload`);
+}
+function exportAsCSV() {
+  let csv = "ID,Type,Name,ParentID,Tags,CreatedAt,UpdatedAt,Content\n";
+  state.nodes.filter(n => !n.trashed).forEach(n => {
+    csv += `${n.id},${n.type},"${(n.name || '').replace(/"/g, '""')}",${n.parentId || ''},"${(n.tags || []).join(',')}",${n.createdAt},${n.updatedAt},"${(n.content || '').replace(/"/g, '""').replace(/\n/g, ' ')}"\n`;
+  });
+  downloadFile(csv, `notesapp-export-${getDateStr()}.csv`, 'text/csv'); closeModal(); showToast('Berhasil diekspor ke CSV');
+}
+function exportAsPDF() {
+  closeModal(); const wasPreview = state.previewMode; if (!wasPreview) togglePreview();
+  setTimeout(() => { window.print(); if (!wasPreview) togglePreview(); }, 300);
+}
+function importData(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.nodes) throw new Error('Format tidak valid');
+      if (!confirm('Import akan mengganti semua data saat ini. Lanjutkan?')) return;
+      state = { ...state, ...data }; saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); showToast('Data berhasil diimpor');
+    } catch(err) { showToast('File tidak valid', 'error'); }
+  };
+  reader.readAsText(file); e.target.value = '';
+}
+
+function renderTree() {
+  const container = document.getElementById('treeContainer');
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  let nodes = state.nodes.filter(n => !n.trashed);
+  if (query) nodes = nodes.filter(n => n.name.toLowerCase().includes(query) || (n.content && n.content.toLowerCase().includes(query)));
+  const roots = nodes.filter(n => n.parentId === null);
+  
+  if (query) { container.innerHTML = nodes.map(n => renderTreeItem(n, 0, true)).join(''); }
+  else {
+    const allCount = state.nodes.filter(n => !n.trashed && n.type === 'note').length;
+    let html = `<div class="tree-item ${state.currentFolderId === null ? 'active' : ''}" data-id="__all__" data-type="virtual">
+      <div class="toggle-placeholder"></div><div class="item-icon note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="item-name">Semua Catatan</div><div class="item-count">${allCount}</div></div>`;
+    const pinnedCount = state.nodes.filter(n => !n.trashed && n.type === 'note' && n.pinned).length;
+    if (pinnedCount > 0) html += `<div class="tree-item ${state.currentFolderId === '__pinned__' ? 'active' : ''}" data-id="__pinned__" data-type="virtual">
+      <div class="toggle-placeholder"></div><div class="item-icon" style="color: var(--accent-amber);"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 7h3l-5 7-5-7h3z"/></svg></div>
+      <div class="item-name">Dipin</div><div class="item-count">${pinnedCount}</div></div>`;
+    html += roots.map(n => renderTreeItem(n, 0)).join('');
+    container.innerHTML = html;
+  }
+  if (container.innerHTML === '') container.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 12px;">Belum ada folder</div>';
+  attachTreeEvents();
+}
+
+function renderTreeItem(node, depth, flat = false) {
+  const isFolder = node.type === 'folder', isExpanded = state.expanded[node.id], isActive = state.currentFolderId === node.id;
+  const children = flat ? [] : state.nodes.filter(n => n.parentId === node.id && !n.trashed);
+  const count = isFolder ? state.nodes.filter(n => n.parentId === node.id && !n.trashed && n.type === 'note').length : 0;
+  const icon = isFolder ? `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  
+  let html = `<div class="tree-item ${isActive ? 'active' : ''}" data-id="${node.id}" data-type="${node.type}" draggable="${isFolder}">`;
+  if (isFolder && !flat) html += `<div class="toggle-btn ${isExpanded ? 'expanded' : ''}" data-toggle="${node.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  else html += '<div class="toggle-placeholder"></div>';
+  html += `<div class="item-icon ${isFolder ? 'folder' : 'note'}">${icon}</div><div class="item-name">${escapeHtml(node.name)}</div>`;
+  if (isFolder && count > 0 && !flat) html += `<div class="item-count">${count}</div>`;
+  if (node.pinned && !isFolder) html += '<div class="item-pin" style="font-size:12px;">⭐</div>';
+  html += '</div>';
+  if (isFolder && isExpanded && children.length > 0 && !flat) {
+    html += `<div class="tree-children">`;
+    children.forEach(c => { html += renderTreeItem(c, depth + 1); });
+    html += '</div>';
+  }
+  return html;
+}
+
+function attachTreeEvents() {
+  document.querySelectorAll('.tree-item').forEach(el => {
+    const id = el.dataset.id, type = el.dataset.type;
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('.toggle-btn')) return;
+      if (type === 'virtual') { state.currentFolderId = id; state.currentNoteId = null; saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); if (window.innerWidth <= 768) toggleSidebar(false); }
+      else selectNode(id);
+    });
+    el.addEventListener('contextmenu', (e) => { if (type !== 'virtual') { e.preventDefault(); showContextMenu(e.clientX, e.clientY, id); } });
+    let pressTimer;
+    el.addEventListener('touchstart', (e) => { pressTimer = setTimeout(() => { if (type !== 'virtual') showContextMenu(e.touches[0].clientX, e.touches[0].clientY, id); }, 600); });
+    el.addEventListener('touchend', () => clearTimeout(pressTimer));
+    el.addEventListener('touchmove', () => clearTimeout(pressTimer));
+    if (type === 'folder') {
+      el.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', id); el.classList.add('dragging'); const g = document.getElementById('dragGhost'); g.textContent = getNode(id).name; g.style.display = 'block'; g.style.left = '-9999px'; e.dataTransfer.setDragImage(g, 10, 10); });
+      el.addEventListener('dragend', () => { el.classList.remove('dragging'); document.getElementById('dragGhost').style.display = 'none'; document.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over')); });
+      el.addEventListener('dragover', (e) => { e.preventDefault(); el.classList.add('drag-over'); });
+      el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+      el.addEventListener('drop', (e) => { e.preventDefault(); el.classList.remove('drag-over'); moveNode(e.dataTransfer.getData('text/plain'), id); });
+    }
+  });
+  document.querySelectorAll('.toggle-btn').forEach(el => {
+    el.addEventListener('click', (e) => { e.stopPropagation(); state.expanded[el.dataset.toggle] = !state.expanded[el.dataset.toggle]; saveToFirestore(); renderTree(); });
+  });
+}
+
+function renderNotesList() {
+  const scroll = document.getElementById('notesScroll'), titleEl = document.getElementById('notesTitle'), subtitleEl = document.getElementById('notesSubtitle');
+  let notes = state.nodes.filter(n => !n.trashed && n.type === 'note');
+  let folderTitle = 'Semua Catatan';
+  
+  if (state.currentFolderId === '__pinned__') { notes = notes.filter(n => n.pinned); folderTitle = '⭐ Dipin'; }
+  else if (state.currentFolderId && state.currentFolderId !== '__all__') {
+    const folder = getNode(state.currentFolderId);
+    if (folder) { notes = notes.filter(n => isDescendantOf(n.id, state.currentFolderId)); folderTitle = folder.name; }
+  }
+  
+  if (state.filter === 'pinned') notes = notes.filter(n => n.pinned);
+  else if (state.filter === 'recent') { notes.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); notes = notes.slice(0, 20); }
+  else notes.sort((a, b) => { if (a.pinned !== b.pinned) return b.pinned ? 1 : -1; return (b.updatedAt || 0) - (a.updatedAt || 0); });
+  
+  titleEl.textContent = folderTitle; subtitleEl.textContent = `${notes.length} catatan`;
+  if (notes.length === 0) {
+    scroll.innerHTML = `<div style="padding:40px 10px; text-align:center; color:var(--text-muted);"><div style="width:48px; height:48px; margin:0 auto 12px; background:var(--bg-sunken); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--text-faint); border:1px solid var(--border);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px; height:22px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3 style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px;">Belum ada catatan</h3><p style="font-size:12px;">Buat catatan pertamamu</p></div>`;
+    return;
+  }
+  scroll.innerHTML = notes.map(n => {
+    const preview = (n.content || '').replace(/[#*`>\[\]()]/g, '').substring(0, 100);
+    const time = formatTime(n.updatedAt);
+    const tags = (n.tags || []).slice(0, 2).map(t => `<span class="note-card-tag">${escapeHtml(t)}</span>`).join('');
+    return `<div class="note-card ${state.currentNoteId === n.id ? 'active' : ''}" data-id="${n.id}" onclick="selectNote('${n.id}')">
+      <div class="note-card-title">${n.pinned ? '<span class="note-card-pin">⭐</span>' : ''}${escapeHtml(n.name || 'Tanpa Judul')}</div>
+      <div class="note-card-preview">${escapeHtml(preview) || 'Tidak ada konten'}</div>
+      <div class="note-card-meta"><span>${time}</span>${tags}</div></div>`;
+  }).join('');
+}
+
+function isDescendantOf(noteId, folderId) {
+  let current = getNode(noteId)?.parentId;
+  while (current) { if (current === folderId) return true; current = getNode(current)?.parentId; }
+  return false;
+}
+
+function setFilter(f) { state.filter = f; document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f)); renderNotesList(); }
+function selectNote(id) { 
+  state.currentNoteId = id; saveToFirestore(); renderNotesList(); renderEditor(); 
+  if (window.innerWidth <= 768) { document.getElementById('editor').classList.add('active-mobile'); pushAppState('editor'); }
+}
+function closeEditorMobile() { document.getElementById('editor').classList.remove('active-mobile'); }
+function selectNode(id) {
+  const node = getNode(id); if (!node) return;
+  state.currentFolderId = id; if (node.type === 'folder') state.expanded[id] = true;
+  const firstNote = state.nodes.find(n => !n.trashed && n.type === 'note' && n.parentId === id);
+  state.currentNoteId = firstNote ? firstNote.id : null;
+  saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); if (window.innerWidth <= 768) toggleSidebar(false);
+}
+
+function createNote() {
+  let parentId = null;
+  if (state.currentFolderId && !['__all__', '__pinned__'].includes(state.currentFolderId)) { const c = getNode(state.currentFolderId); if (c?.type === 'folder') parentId = c.id; }
+  else if (state.currentNoteId) { const c = getNode(state.currentNoteId); if (c) parentId = c.parentId; }
+  const note = { id: uid(), type: 'note', parentId, name: 'Catatan Baru', content: '', tags: [], pinned: false, createdAt: Date.now(), updatedAt: Date.now() };
+  state.nodes.push(note); state.currentNoteId = note.id; saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
+  setTimeout(() => { const ti = document.getElementById('titleInput'); if (ti) { ti.focus(); ti.select(); } }, 100);
+  showToast('Catatan dibuat'); 
+  if (window.innerWidth <= 768) { document.getElementById('editor').classList.add('active-mobile'); pushAppState('editor'); }
+}
+
+function createNoteIn(folderId) {
+  const note = { id: uid(), type: 'note', parentId: folderId, name: 'Catatan Baru', content: '', tags: [], pinned: false, createdAt: Date.now(), updatedAt: Date.now() };
+  state.nodes.push(note); state.currentNoteId = note.id; state.currentFolderId = folderId; state.expanded[folderId] = true;
+  saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
+  setTimeout(() => { const ti = document.getElementById('titleInput'); if (ti) { ti.focus(); ti.select(); } }, 100);
+  if (window.innerWidth <= 768) { document.getElementById('editor').classList.add('active-mobile'); pushAppState('editor'); }
+}
+
+function createFolder() {
+  let parentId = null;
+  if (state.currentFolderId && !['__all__', '__pinned__'].includes(state.currentFolderId)) { const c = getNode(state.currentFolderId); if (c?.type === 'folder') parentId = c.id; }
+  showModal('Folder Baru', 'Buat folder untuk mengorganisir', 'Nama folder', 'Folder Baru', (name) => {
+    if (!name.trim()) return;
+    const folder = { id: uid(), type: 'folder', parentId, name: name.trim(), createdAt: Date.now(), updatedAt: Date.now() };
+    state.nodes.push(folder); state.expanded[folder.id] = true; state.currentFolderId = folder.id;
+    saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); showToast('Folder dibuat');
+  });
+}
+
+function createSubFolder(parentId) {
+  showModal('Subfolder Baru', 'Buat subfolder di dalam folder ini', 'Nama subfolder', 'Subfolder Baru', (name) => {
+    if (!name.trim()) return;
+    const folder = { id: uid(), type: 'folder', parentId, name: name.trim(), createdAt: Date.now(), updatedAt: Date.now() };
+    state.nodes.push(folder); state.expanded[parentId] = true; state.expanded[folder.id] = true;
+    saveToFirestore(); renderTree(); renderNotesList(); showToast('Subfolder dibuat');
+  });
+}
+
+function moveNode(sourceId, targetId) {
+  if (!sourceId || !targetId || sourceId === targetId) return;
+  const source = getNode(sourceId), target = getNode(targetId);
+  if (!source || !target || target.type !== 'folder') { showToast('Target harus folder', 'error'); return; }
+  let check = targetId;
+  while (check) { if (check === sourceId) { showToast('Tidak bisa memindahkan ke dalam dirinya sendiri', 'error'); return; } check = getNode(check)?.parentId; }
+  source.parentId = targetId; source.updatedAt = Date.now(); state.expanded[targetId] = true;
+  saveToFirestore(); renderTree(); renderNotesList(); showToast('Dipindahkan');
+}
+
+function deleteNode(id) {
+  const node = getNode(id); if (!node) return;
+  if (node.trashed) {
+    const toDelete = [id];
+    const collect = (pid) => { state.nodes.filter(n => n.parentId === pid).forEach(n => { toDelete.push(n.id); if (n.type === 'folder') collect(n.id); }); };
+    if (node.type === 'folder') collect(id);
+    state.nodes = state.nodes.filter(n => !toDelete.includes(n.id));
+    if (state.currentNoteId && toDelete.includes(state.currentNoteId)) state.currentNoteId = null;
+    if (state.currentFolderId && toDelete.includes(state.currentFolderId)) state.currentFolderId = null;
+    showToast('Dihapus permanen');
+  } else {
+    node.trashed = true; node.trashedAt = Date.now();
+    const mark = (pid) => { state.nodes.filter(n => n.parentId === pid).forEach(n => { n.trashed = true; n.trashedAt = Date.now(); if (n.type === 'folder') mark(n.id); }); };
+    if (node.type === 'folder') mark(id);
+    if (state.currentNoteId === id) state.currentNoteId = null;
+    if (state.currentFolderId === id) state.currentFolderId = null;
+    showToast('Dipindahkan ke sampah');
+  }
+  saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
+}
+
+function restoreNode(id) {
+  const node = getNode(id); if (!node) return;
+  const restore = (n) => { n.trashed = false; delete n.trashedAt; state.nodes.filter(c => c.parentId === n.id).forEach(restore); };
+  restore(node); saveToFirestore(); renderTree(); renderNotesList(); showToast('Dipulihkan');
+}
+
+function renameNode(id) {
+  const node = getNode(id); if (!node) return;
+  showModal('Ubah Nama', `Ubah nama ${node.type === 'folder' ? 'folder' : 'catatan'}`, 'Nama baru', node.name, (name) => {
+    if (!name.trim()) return; node.name = name.trim(); node.updatedAt = Date.now(); saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
+  });
+}
+
+function togglePinNode(id) {
+  const node = getNode(id); if (!node || node.type !== 'note') return;
+  node.pinned = !node.pinned; node.updatedAt = Date.now(); saveToFirestore(); renderTree(); renderNotesList(); renderEditor();
+  showToast(node.pinned ? 'Dipin ⭐' : 'Unpin');
+}
+
+function duplicateNode(id) {
+  const node = getNode(id); if (!node) return;
+  const clone = JSON.parse(JSON.stringify(node)); clone.id = uid(); clone.name = node.name + ' (salinan)'; clone.createdAt = Date.now(); clone.updatedAt = Date.now();
+  const cloneChildren = (oldPid, newPid) => {
+    state.nodes.filter(n => n.parentId === oldPid).forEach(child => {
+      const cc = JSON.parse(JSON.stringify(child)); const newId = uid(); const oldId = cc.id;
+      cc.id = newId; cc.parentId = newPid; cc.createdAt = Date.now(); cc.updatedAt = Date.now();
+      state.nodes.push(cc); if (cc.type === 'folder') cloneChildren(oldId, newId);
+    });
+  };
+  state.nodes.push(clone); if (clone.type === 'folder') cloneChildren(node.id, clone.id);
+  state.currentNoteId = clone.type === 'note' ? clone.id : state.currentNoteId;
+  state.currentFolderId = clone.type === 'folder' ? clone.id : state.currentFolderId;
+  saveToFirestore(); renderTree(); renderNotesList(); renderEditor(); showToast('Diduplikat');
+}
+
+function renderEditor() {
+  const empty = document.getElementById('emptyState'), content = document.getElementById('editorContent');
+  const node = state.currentNoteId ? getNode(state.currentNoteId) : null;
+  if (!node || node.type !== 'note') { empty.style.display = 'flex'; content.style.display = 'none'; updateBreadcrumb(); updateStatus(); return; }
+  empty.style.display = 'none'; content.style.display = 'flex';
+  document.getElementById('titleInput').value = node.name;
+  document.getElementById('tagsInput').value = (node.tags || []).join(', ');
+  document.getElementById('contentInput').value = node.content || '';
+  document.getElementById('pinBtn').style.color = node.pinned ? 'var(--accent-amber)' : '';
+  updateBreadcrumb(); updateStatus(); updatePreview();
+}
+
+// OPTIMIZED: Debounced update for stability
+function updateNote() {
+  const node = getNode(state.currentNoteId); if (!node || node.type !== 'note') return;
+  
+  const newTitle = document.getElementById('titleInput').value || 'Tanpa Judul';
+  const newContent = document.getElementById('contentInput').value;
+  const newTags = document.getElementById('tagsInput').value.split(',').map(t => t.trim()).filter(t => t);
+  
+  // Only update state and schedule save if something actually changed
+  if (node.name !== newTitle || node.content !== newContent || JSON.stringify(node.tags) !== JSON.stringify(newTags)) {
+    node.name = newTitle;
+    node.content = newContent;
+    node.tags = newTags;
+    node.updatedAt = Date.now();
+    
+    // Instant UI updates (no heavy DOM re-renders)
+    updateStatus();
+    updatePreview();
+    updateBreadcrumb();
+    
+    // Debounced heavy operations (Firestore + List/Tree re-render)
+    scheduleSave();
+  }
+}
+
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb'); const node = state.currentNoteId ? getNode(state.currentNoteId) : null;
+  if (!node) { bc.innerHTML = '<span class="breadcrumb-item current">NotesApp Pro</span>'; return; }
+  const path = []; let current = node;
+  while (current) { path.unshift(current); current = current.parentId ? getNode(current.parentId) : null; }
+  bc.innerHTML = '<span class="breadcrumb-item" onclick="state.currentNoteId=null;renderNotesList();renderEditor();">Root</span>' +
+    path.map((p, i) => `<span class="breadcrumb-sep">›</span><span class="breadcrumb-item ${i === path.length - 1 ? 'current' : ''}" onclick="selectNode('${p.id}')">${escapeHtml(p.name)}</span>`).join('');
+}
+
+function updateStatus() {
+  const node = getNode(state.currentNoteId);
+  if (!node) { document.getElementById('statusLeft').innerHTML = '<span class="status-dot"></span>Tersimpan di Cloud'; document.getElementById('statusRight').textContent = `${state.nodes.filter(n=>!n.trashed).length} item`; return; }
+  const chars = (node.content || '').length;
+  const words = (node.content || '').trim() ? (node.content || '').trim().split(/\s+/).length : 0;
+  document.getElementById('metaTime').textContent = formatTime(node.updatedAt);
+  document.getElementById('metaStats').textContent = `${words} kata • ${chars} karakter`;
+  document.getElementById('metaRead').textContent = `~${Math.max(1, Math.ceil(words / 200))} min read`;
+}
+
+function updatePreview() { if (!state.previewMode) return; document.getElementById('previewContent').innerHTML = renderMarkdown(document.getElementById('contentInput').value); }
+
+function togglePreview() {
+  state.previewMode = !state.previewMode;
+  const toolbarBtn = document.getElementById('previewBtn');
+  const headerBtn = document.getElementById('headerPreviewBtn');
+  const ta = document.getElementById('contentInput');
+  const pv = document.getElementById('previewContent');
+  
+  if (state.previewMode) { 
+    if(toolbarBtn) toolbarBtn.classList.add('active'); 
+    if(headerBtn) headerBtn.classList.add('active');
+    ta.style.display = 'none'; 
+    pv.style.display = 'block'; 
+    updatePreview(); 
+  } else { 
+    if(toolbarBtn) toolbarBtn.classList.remove('active'); 
+    if(headerBtn) headerBtn.classList.remove('active');
+    ta.style.display = 'block'; 
+    pv.style.display = 'none'; 
+  }
+}
+
+function togglePin() { const node = getNode(state.currentNoteId); if (node) togglePinNode(node.id); }
+
+function insertMarkdown(before, after) {
+  const ta = document.getElementById('contentInput'); if (!ta) return;
+  const start = ta.selectionStart, end = ta.selectionEnd, text = ta.value;
+  const selected = text.substring(start, end);
+  ta.value = text.substring(0, start) + before + selected + after + text.substring(end);
+  ta.focus(); ta.setSelectionRange(start + before.length, start + before.length + selected.length);
+  updateNote();
+}
+
+// ========== FUNGSI EKSTRAKSI ID DARI URL ==========
+function extractUrlInfo(url) {
+  let service = '', id = '', tooltip = `Klik untuk buka atau Alt+Klik untuk menyalin: ${url}`, badge = '';
+  
+  if (url.includes('drive.google.com')) {
+    service = 'Google Drive';
+    let match = null;
+    if (!match) match = url.match(/\/file\/d\/([^\/\?]+)/);
+    if (!match) match = url.match(/\/drive\/folders\/([^\/\?]+)/);
+    if (!match) match = url.match(/[?\&]id=([^\/\?]+)/);
+    id = match ? match[1] : '';
+    if (id) { 
+      const isFolder = url.includes('/folders/') || url.includes('folderview');
+      const icon = isFolder ? '📁' : '📄';
+      const typeLabel = isFolder ? 'Folder' : 'File';
+      tooltip = `${icon} ${service} (${typeLabel})\nID: ${id}\n\nKlik untuk buka | Alt+Klik untuk salin ID`; 
+      badge = ` <span class="id-badge" title="Klik untuk salin ID: ${id}">${icon}</span>`; 
+    }
+  } else if (url.includes('docs.google.com')) {
+    if (url.includes('/spreadsheets/')) { service = 'Google Sheets'; const match = url.match(/\/spreadsheets\/d\/([^\/\?]+)/); id = match ? match[1] : ''; }
+    else if (url.includes('/document/')) { service = 'Google Docs'; const match = url.match(/\/document\/d\/([^\/\?]+)/); id = match ? match[1] : ''; }
+    else if (url.includes('/presentation/')) { service = 'Google Slides'; const match = url.match(/\/presentation\/d\/([^\/\?]+)/); id = match ? match[1] : ''; }
+    if (id) { tooltip = `📄 ${service}\nID: ${id}\n\nKlik untuk buka | Alt+Klik untuk salin ID`; badge = ` <span class="id-badge" title="Klik untuk salin ID: ${id}">📋</span>`; }
+  } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    service = 'YouTube';
+    let match = url.match(/[?\&]v=([^\/\?]+)/);
+    if (!match) match = url.match(/youtu\.be\/([^\/\?]+)/);
+    id = match ? match[1] : '';
+    if (id) { tooltip = `🎬 ${service}\nID: ${id}\n\nKlik untuk buka | Alt+Klik untuk salin ID`; badge = ` <span class="id-badge" title="Klik untuk salin ID: ${id}">🎬</span>`; }
+  } else if (url.includes('forms.google.com') || url.includes('forms.gle')) {
+    service = 'Google Forms';
+    const match1 = url.match(/\/forms\/d\/([^\/\?]+)/), match2 = url.match(/forms\.gle\/([^\/\?]+)/);
+    id = match1 ? match1[1] : match2 ? match2[1] : '';
+    if (id) { tooltip = `📝 ${service}\nID: ${id}\n\nKlik untuk buka | Alt+Klik untuk salin ID`; badge = ` <span class="id-badge" title="Klik untuk salin ID: ${id}">📝</span>`; }
+  }
+  return { tooltip, badge, id, service };
+}
+
+// ========== FUNGSI RENDER MARKDOWN ==========
+function renderMarkdown(text) {
+  if (!text) return '<p style="color:var(--text-muted); font-style:italic;">Tidak ada konten</p>';
+  
+  const tokenPlaceholders = [];
+  let processedText = text.replace(/("(?:refresh_token|access_token|api_key|client_secret|secret)"\s*:\s*")\s*([^"]+)(")/gi, (match, prefix, token, suffix) => {
+    const cleanToken = token.trim();
+    if (cleanToken.length > 10) {
+      const masked = cleanToken.length > 20 
+        ? cleanToken.substring(0, 10) + '••••••••' + cleanToken.substring(cleanToken.length - 5) 
+        : cleanToken;
+      const safeToken = cleanToken.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const placeholder = `___TOKEN_${tokenPlaceholders.length}___`;
+      tokenPlaceholders.push(`<span class="token-badge" data-token="${safeToken}" title="⚠️ Token Rahasia! Klik untuk menyalin utuh">🔒 ${masked}</span>`);
+      return prefix + placeholder + suffix;
+    }
+    return match;
+  });
+
+  let html = escapeHtml(processedText);
+
+  tokenPlaceholders.forEach((badgeHtml, index) => {
+    html = html.replace(`___TOKEN_${index}___`, badgeHtml);
+  });
+  
+  const codeBlocks = [];
+  html = html.replace(/```([\s\S]*?)```/g, (match, p1) => {
+    codeBlocks.push(`<pre><code>${escapeHtml(p1)}</code></pre>`);
+    return `%%CODEBLOCK${codeBlocks.length - 1}%%`;
+  });
+  
+  const inlineCodes = [];
+  html = html.replace(/`([^`\n]+)`/g, (match, p1) => {
+    inlineCodes.push(`<code>${escapeHtml(p1)}</code>`);
+    return `%%INLINECODE${inlineCodes.length - 1}%%`;
+  });
+
+  const markdownLinks = [];
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, p1, p2) => {
+    const info = extractUrlInfo(p2);
+    markdownLinks.push(`<a href="${p2}" title="${info.tooltip}" target="_blank" rel="noopener" class="smart-link">${p1}${info.badge}</a>`);
+    return `%%MARKDOWNLINK${markdownLinks.length - 1}%%`;
+  });
+
+  const urlRegex = /(?<![a-zA-Z0-9\/])(https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
+  const wwwRegex = /(?<![a-zA-Z0-9\/])(www\.[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
+
+  html = html.replace(urlRegex, (match, url) => {
+    const info = extractUrlInfo(url);
+    return `<a href="${url}" title="${info.tooltip}" target="_blank" rel="noopener" class="smart-link">${url}${info.badge}</a>`;
+  });
+  
+  html = html.replace(wwwRegex, (match, url) => {
+    const fullUrl = 'https://' + url;
+    const info = extractUrlInfo(fullUrl);
+    return `<a href="${fullUrl}" title="${info.tooltip}" target="_blank" rel="noopener" class="smart-link">${url}${info.badge}</a>`;
+  });
+
+  const emailRegex = /(?<![a-zA-Z0-9._%+-])([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi;
+  html = html.replace(emailRegex, '<a href="mailto:$1" title="Kirim email ke: $1">$1</a>');
+
+  html = html.replace(/%%MARKDOWNLINK(\d+)%%/g, (match, p1) => markdownLinks[p1]);
+
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>').replace(/^## (.+)$/gm, '<h2>$1</h2>').replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>').replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  html = html.replace(/^- \[x\] (.+)$/gm, '<li style="list-style:none;"><input type="checkbox" checked disabled> $1</li>');
+  html = html.replace(/^- \[ \] (.+)$/gm, '<li style="list-style:none;"><input type="checkbox" disabled> $1</li>');
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>)(?!\s*<li>)/g, '<ul>$1</ul>');
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>').replace(/^---$/gm, '<hr>');
+  
+  html = html.replace(/%%CODEBLOCK(\d+)%%/g, (match, p1) => codeBlocks[p1]);
+  html = html.replace(/%%INLINECODE(\d+)%%/g, (match, p1) => inlineCodes[p1]);
+
+  html = html.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+  html = '<p>' + html + '</p>';
+  html = html.replace(/<p><\/p>/g, '');
+  
+  ['h1','h2','h3','ul','ol','pre','blockquote','hr'].forEach(tag => {
+    html = html.replace(new RegExp(`<p><${tag}`, 'g'), `<${tag}`).replace(new RegExp(`</${tag}></p>`, 'g'), `</${tag}>`);
+  });
+  
+  return html;
+}
+
+function showContextMenu(x, y, id) {
+  const node = getNode(id); if (!node) return;
+  const menu = document.getElementById('contextMenu'); let items = '';
+  if (node.trashed) {
+    items = `<div class="context-item" onclick="restoreNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Pulihkan</div>
+    <div class="context-item danger" onclick="deleteNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Hapus Permanen</div>`;
+  } else {
+    items = `<div class="context-item" onclick="renameNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Ubah Nama</div>`;
+    if (node.type === 'note') {
+      items += `<div class="context-item" onclick="togglePinNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 7h3l-5 7-5-7h3z"/></svg>${node.pinned ? 'Unpin' : 'Pin'}</div>`;
+      items += `<div class="context-item" onclick="exportNote('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Catatan</div>`;
+    }
+    if (node.type === 'folder') {
+      items += `<div class="context-item" onclick="createNoteIn('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Catatan Baru</div>
+      <div class="context-item" onclick="createSubFolder('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Subfolder</div>`;
+      items += `<div class="context-item" onclick="exportFolder('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download Folder</div>`;
+    }
+    items += `<div class="context-sep"></div><div class="context-item" onclick="duplicateNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Duplikat</div>
+    <div class="context-item danger" onclick="deleteNode('${id}');hideContextMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Hapus</div>`;
+  }
+  menu.innerHTML = items; menu.classList.add('active');
+  const mw = menu.offsetWidth, mh = menu.offsetHeight, wx = window.innerWidth, wy = window.innerHeight;
+  menu.style.left = Math.min(x, wx - mw - 10) + 'px'; menu.style.top = Math.min(y, wy - mh - 10) + 'px';
+}
+
+function hideContextMenu() { document.getElementById('contextMenu').classList.remove('active'); }
+function showTrash() {
+  const trashed = state.nodes.filter(n => n.trashed);
+  if (trashed.length === 0) { showToast('Sampah kosong'); return; }
+  let items = trashed.map(n => `<div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; background: var(--bg-elevated);">
+    <div style="flex:1; overflow:hidden;"><div style="font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px;">${escapeHtml(n.name)}</div>
+    <div style="font-size:11px; color:var(--text-muted); font-weight: 500;">${n.type === 'folder' ? 'Folder' : 'Catatan'} • ${formatTime(n.trashedAt)}</div></div>
+    <button class="icon-btn" onclick="restoreNode('${n.id}');closeModal();showTrash();" title="Pulihkan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+    <button class="icon-btn" style="color:var(--danger);" onclick="deleteNode('${n.id}');closeModal();showTrash();" title="Hapus Permanen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div>`).join('');
+  document.getElementById('modal').innerHTML = `<h3>🗑️ Sampah</h3><p class="modal-subtitle">${trashed.length} item di sampah</p><div style="max-height: 350px; overflow-y: auto; padding-right: 4px;">${items}</div>
+    <div class="modal-actions" style="margin-top: 20px;"><button class="btn btn-secondary" onclick="closeModal()">Tutup</button><button class="btn btn-primary" style="background: var(--danger); color: white;" onclick="emptyTrash()">Kosongkan</button></div>`;
+  document.getElementById('modalOverlay').classList.add('active'); pushAppState('modal');
+}
+function emptyTrash() {
+  if (!confirm('Hapus semua item di sampah secara permanen?')) return;
+  state.nodes = state.nodes.filter(n => !n.trashed); saveToFirestore(); closeModal(); renderTree(); renderNotesList(); renderEditor(); showToast('Sampah dikosongkan');
+}
+
+function showModal(title, subtitle, placeholder, defaultValue, onConfirm) {
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `<h3>${title}</h3><p class="modal-subtitle">${subtitle}</p><input type="text" id="modalInput" placeholder="${placeholder}" value="${escapeHtml(defaultValue || '')}">
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Batal</button><button class="btn btn-primary" id="modalConfirm">Simpan</button></div>`;
+  document.getElementById('modalOverlay').classList.add('active'); pushAppState('modal');
+  const input = document.getElementById('modalInput');
+  setTimeout(() => { input.focus(); input.select(); }, 50);
+  document.getElementById('modalConfirm').onclick = () => { onConfirm(input.value); closeModal(); };
+  input.onkeydown = (e) => { if (e.key === 'Enter') { onConfirm(input.value); closeModal(); } if (e.key === 'Escape') closeModal(); };
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+function toggleTheme() { 
+  state.theme = state.theme === 'light' ? 'dark' : 'light'; 
+  localStorage.setItem('notesapp_theme', state.theme); 
+  saveToFirestore(); applyTheme(); 
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', state.theme);
+  const icon = document.getElementById('themeIcon');
+  if (icon) {
+    icon.innerHTML = state.theme === 'dark' 
+      ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>' 
+      : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+
+function toggleSidebar(force) {
+  const sb = document.getElementById('sidebar'), bd = document.getElementById('backdrop');
+  const shouldOpen = force !== undefined ? force : !sb.classList.contains('open');
+  if (shouldOpen) { sb.classList.add('open'); bd.classList.add('active'); if (window.innerWidth <= 768) pushAppState('sidebar'); }
+  else { sb.classList.remove('open'); bd.classList.remove('active'); }
+}
+
+function handleSearch() { renderTree(); }
+function toggleToolbar() { state.toolbarVisible = !state.toolbarVisible; saveToFirestore(); updateToolbarVisibility(); }
+
+function updateToolbarVisibility() {
+  const toolbar = document.getElementById('editorToolbar'), btn = document.getElementById('toolbarToggleBtn'), icon = document.getElementById('toolbarToggleIcon');
+  if (state.toolbarVisible) {
+    toolbar.classList.remove('hidden'); btn.title = 'Sembunyikan Toolbar';
+    icon.innerHTML = '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>';
+  } else {
+    toolbar.classList.add('hidden'); btn.title = 'Tampilkan Toolbar';
+    icon.innerHTML = '<rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M6 16h12"/>';
+  }
+}
+
+function formatTime(ts) {
+  if (!ts) return 'Baru saja';
+  const diff = Date.now() - ts, mins = Math.floor(diff / 60000), hours = Math.floor(diff / 3600000), days = Math.floor(diff / 86400000);
+  if (mins < 1) return 'Baru saja'; if (mins < 60) return `${mins}m lalu`; if (hours < 24) return `${hours}j lalu`; if (days < 7) return `${days}h lalu`;
+  const d = new Date(ts); return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: d.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined });
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast'), msgEl = document.getElementById('toastMsg');
+  msgEl.textContent = msg; t.className = `toast ${type}`;
+  t.querySelector('.toast-icon').innerHTML = type === 'error' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 7 15"/></svg>';
+  setTimeout(() => t.classList.add('show'), 10); setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function fabAction() {
+  document.getElementById('modal').innerHTML = `<h3>Buat Baru</h3><p class="modal-subtitle">Pilih jenis item</p>
+    <button class="btn btn-primary" style="width:100%; margin-bottom:8px; justify-content:flex-start;" onclick="createNote(); closeModal();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Catatan Baru
+    </button>
+    <button class="btn btn-secondary" style="width:100%; justify-content:flex-start;" onclick="createFolder()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Folder Baru
+    </button>`;
+  document.getElementById('modalOverlay').classList.add('active'); pushAppState('modal');
+}
+
+function showMoreMenu(e) {
+  e.preventDefault(); e.stopPropagation();
+  const node = getNode(state.currentNoteId); if (!node) return;
+  let x, y;
+  if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX; y = e.touches[0].clientY; }
+  else if (e.clientX !== undefined && e.clientX !== 0) { x = e.clientX; y = e.clientY; }
+  else { const btn = document.getElementById('moreMenuBtn'); const rect = btn.getBoundingClientRect(); x = rect.right; y = rect.bottom; }
+  showContextMenu(x, y, node.id);
+}
+
+// ========== INITIALIZATION ==========
+let isGlobalEventsSetup = false;
+function setupGlobalEventsOnce() {
+  if (isGlobalEventsSetup) return;
+  isGlobalEventsSetup = true;
+  
+  document.addEventListener('click', (e) => { 
+    if (!e.target.closest('.context-menu')) hideContextMenu(); 
+    
+    if (e.target.classList.contains('id-badge')) {
+      e.preventDefault(); e.stopPropagation();
+      const link = e.target.closest('a');
+      if (link && link.href) {
+        const info = extractUrlInfo(link.href);
+        if (info.id) {
+          navigator.clipboard.writeText(info.id).then(() => {
+            showToast(`ID ${info.service} disalin: ${info.id}`);
+          }).catch(() => showToast('Gagal menyalin ID', 'error'));
+        }
+      }
+      return;
+    }
+
+    if (e.target.classList.contains('token-badge')) {
+      e.preventDefault(); e.stopPropagation();
+      const token = e.target.getAttribute('data-token');
+      if (token) {
+        navigator.clipboard.writeText(token).then(() => {
+          showToast('⚠️ Token rahasia disalin! Jaga keamanannya.');
+        }).catch(() => showToast('Gagal menyalin token', 'error'));
+      }
+      return;
+    }
+
+    if (e.altKey && e.target.tagName === 'A' && e.target.href) {
+      e.preventDefault();
+      const info = extractUrlInfo(e.target.href);
+      if (info.id) {
+        navigator.clipboard.writeText(info.id).then(() => {
+          showToast(`ID ${info.service || 'tautan'} disalin: ${info.id}`);
+        }).catch(() => showToast('Gagal menyalin ID', 'error'));
+      } else {
+        navigator.clipboard.writeText(e.target.href).then(() => {
+          showToast('Tautan disalin ke clipboard!');
+        }).catch(() => showToast('Gagal menyalin tautan', 'error'));
+      }
+    }
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); createNote(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b' && document.activeElement === document.getElementById('contentInput')) { e.preventDefault(); insertMarkdown('**', '**'); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'i' && document.activeElement === document.getElementById('contentInput')) { e.preventDefault(); insertMarkdown('*', '*'); }
+    if (e.key === 'Escape') { hideContextMenu(); closeModal(); }
+  });
+  
+  setInterval(() => {
+    const node = getNode(state.currentNoteId);
+    if (node && node.type === 'note') {
+        const statusLeft = document.getElementById('statusLeft');
+        if(statusLeft && !statusLeft.innerHTML.includes('Menyimpan')) statusLeft.innerHTML = '<span class="status-dot"></span>Tersimpan di Cloud';
+    }
+  }, 5000);
+}
+
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    currentUserId = user.uid;
+    document.getElementById('userEmailDisplay').textContent = user.email;
+    loadFromFirestore(user.uid);
+  } else {
+    currentUserId = null;
+    if (unsubscribeFirestore) { unsubscribeFirestore(); unsubscribeFirestore = null; }
+    document.getElementById('loadingOverlay').classList.remove('active');
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('authOverlay').style.display = 'flex';
+    state = { nodes: [], currentFolderId: null, currentNoteId: null, expanded: {}, theme: state.theme, previewMode: false, filter: 'all', toolbarVisible: true }; 
+  }
+});
+
+applyTheme();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(registration => console.log('SW registered:', registration))
+      .catch(error => console.log('SW registration failed:', error));
+  });
+}
+</script>
+</body>
+</html>
